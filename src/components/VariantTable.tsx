@@ -1,0 +1,109 @@
+'use client'
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+
+import type { Dict } from '../lib/i18n'
+
+export type VariantRow = {
+  sku: string
+  sizeLabel: string
+  product?: string
+  values: Record<string, number | null | undefined>
+  color?: string | null
+}
+
+type Props = {
+  rows: VariantRow[]
+  columns: string[]
+  dict: Dict
+  showProduct?: boolean
+  filterable?: boolean
+  caption: string
+  locale: 'vi' | 'en'
+}
+
+const fmt = (v: number, locale: string) => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'vi-VN', { maximumFractionDigits: 2 }).format(v)
+
+/**
+ * Bảng quy cách. Số chưa xác nhận (API không trả) hiện "Đang cập nhật" — không để ô trống, không để gạch (BR-04).
+ * Bộ lọc cỡ lưu trên URL (?co=...) để chia sẻ được đường dẫn.
+ */
+export function VariantTable({ rows, columns, dict, showProduct, filterable, caption, locale }: Props) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const params = useSearchParams()
+  const sizeFilter = params.get('co')
+  const sizes = Array.from(new Set(rows.map((r) => r.sizeLabel)))
+  const shown = sizeFilter ? rows.filter((r) => r.sizeLabel === sizeFilter) : rows
+
+  const setFilter = (v: string | null) => {
+    const next = new URLSearchParams(params.toString())
+    if (v) next.set('co', v)
+    else next.delete('co')
+    router.replace(`${pathname}${next.size ? `?${next}` : ''}`, { scroll: false })
+  }
+
+  const label = (c: string) => (dict.spec as Record<string, string>)[c] ?? c
+  const hasPending = rows.some((r) => columns.some((c) => r.values[c] == null))
+
+  return (
+    <div>
+      {filterable && sizes.length > 4 ? (
+        <div className="filters" role="group" aria-label={dict.common.filterBy}>
+          <button type="button" className="chip" aria-pressed={!sizeFilter} onClick={() => setFilter(null)}>
+            {dict.common.filterAll}
+          </button>
+          {sizes.map((s) => (
+            <button key={s} type="button" className="chip" aria-pressed={sizeFilter === s} onClick={() => setFilter(s)}>
+              {s}
+            </button>
+          ))}
+        </div>
+      ) : null}
+      {shown.length === 0 ? (
+        <div className="empty">
+          <p>{dict.common.noMatch}</p>
+          <button type="button" className="btn btn--ghost" onClick={() => setFilter(null)}>
+            {dict.common.clear}
+          </button>
+        </div>
+      ) : (
+        <div className="table-wrap">
+          <table className="spec">
+            <caption className="visually-hidden">{caption}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{dict.common.code}</th>
+                {showProduct ? <th scope="col">{locale === 'vi' ? 'Sản phẩm' : 'Product'}</th> : null}
+                <th scope="col">{dict.common.size}</th>
+                {columns.map((c) => (
+                  <th key={c} scope="col">
+                    {label(c)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {shown.map((r) => (
+                <tr key={r.sku}>
+                  <th scope="row">{r.sku}</th>
+                  {showProduct ? <td>{r.product}</td> : null}
+                  <td>{r.sizeLabel}</td>
+                  {columns.map((c) => {
+                    const v = r.values[c]
+                    return (
+                      <td key={c} className={v != null ? 'num' : undefined}>
+                        {v != null ? fmt(v, locale) : <span className="pending">{dict.common.updating}</span>}
+                      </td>
+                    )
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {hasPending ? <p className="small muted" style={{ marginTop: 12 }}>{dict.spec.pendingNote}</p> : null}
+    </div>
+  )
+}
