@@ -51,7 +51,7 @@ services:
       - caddy_config:/config
     environment:
       SITE_DOMAIN: ${SITE_DOMAIN}
-      ADMIN_ALLOW_IPS: ${ADMIN_ALLOW_IPS:-0.0.0.0/0}
+      ADMIN_ALLOW_IPS: '${ADMIN_ALLOW_IPS:-0.0.0.0/0 ::/0}'
     depends_on:
       - web
 

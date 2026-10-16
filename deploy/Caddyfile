@@ -1,6 +1,7 @@
 # Reverse proxy + HTTPS tự động (Let's Encrypt).
 # ADMIN_ALLOW_IPS: danh sách IP văn phòng được vào trang quản trị (lớp bảo vệ thứ hai, mục 18).
-# Nếu dùng Cloudflare Access thay danh sách IP, để ADMIN_ALLOW_IPS=0.0.0.0/0 và cấu hình Access cho /admin.
+# Ghi cả IPv4 và IPv6 của văn phòng: 0.0.0.0/0 chỉ khớp IPv4, máy vào bằng IPv6 sẽ bị chặn.
+# Nếu dùng Cloudflare Access thay danh sách IP, để ADMIN_ALLOW_IPS="0.0.0.0/0 ::/0" và cấu hình Access cho /admin.
 
 {$SITE_DOMAIN} {
 	encode zstd gzip
