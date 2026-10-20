@@ -32,8 +32,8 @@ MVP v0.1 website renco.vn đã có mã đầy đủ trên GitHub (16/10/2026) v�
 | # | Việc | Mức | Trạng thái |
 | --- | --- | --- | --- |
 | 1 | Lỗ hổng `braces` (GHSA-vfj7-8cjw-p6xm, qua `@payloadcms/next › sass › chokidar`) mức cao, **chưa có bản vá** | 🟡 | Thắng chốt: **không bỏ qua**, để job `audit` đỏ, theo dõi tới khi có bản vá. Mỗi phiên kiểm: `npx -y pnpm@10.34.7 audit --prod --audit-level=high` [xác minh 20/10] |
-| 2 | RUNBOOK quay lui gắn nhãn sai; `backup.sh` ghi cứng tên ổ dữ liệu; chưa diễn tập khôi phục | 🔴 | Chưa sửa [xác minh 18/10] |
-| 3 | Form tạo tài khoản đầu tiên (`/admin` trên database mới) để ô **Vai trò mặc định là Sales**. Quên đổi sang Giám đốc thì tài khoản đầu tiên không tạo được người dùng khác, phải sửa thẳng trong database | 🟡 | Chọn «Giám đốc» thì lưu đúng [xác minh 20/10]. Cần ghi vào RUNBOOK mục 2; cân nhắc đổi mặc định khi chưa có người dùng nào |
+| 2 | Sao lưu, quay lui, khôi phục | 🟡 | PR `sua-backup-va-runbook` (chờ gộp): `backup.sh` tự tìm ổ tệp của container web, dừng và báo `BACKUP LOI` khi dump rỗng / ổ tệp rỗng / mã hoá hoặc đẩy đi lỗi, luôn xoá bản chưa mã hoá; RUNBOOK gắn nhãn `prev` **trước** khi build, khôi phục dùng được cho máy chủ mới. Đã diễn tập trên máy với dự án Docker rút gọn (cùng tên dịch vụ, ổ, đường dẫn): sao lưu → khôi phục sang dự án khác, dữ liệu và tệp nguyên vẹn; 3 ca hỏng đều bị chặn [xác minh 20/10]. **Còn phải diễn tập trên VPS test** với `docker-compose.yml` thật và rclone thật |
+| 3 | Form tạo tài khoản đầu tiên (`/admin` trên database mới) để ô **Vai trò mặc định là Sales**. Quên đổi sang Giám đốc thì tài khoản đầu tiên không tạo được người dùng khác, phải sửa thẳng trong database | 🟡 | Chọn «Giám đốc» thì lưu đúng [xác minh 20/10]. Đã ghi cảnh báo vào RUNBOOK mục 2 (PR `sua-backup-va-runbook`); cân nhắc đổi mặc định khi chưa có người dùng nào |
 | 3b | Trang chủ trên database trống còn khối trống (ảnh hero, khối Nhà máy), số «750 tấn» viết cứng trong mã, chân trang hiện nhãn «Mã số doanh nghiệp:», «Trụ sở:», «Email:» không có giá trị | 🟢 | Không sập; xử lý khi dựng bộ 2 [xác minh 20/10 — chụp màn bản production] |
 | 4 | `ADMIN_ALLOW_IPS` mặc định mở mọi IP; chặn IP không phủ `/api/users/login` | 🟡 | Chưa sửa [xác minh 18/10] |
 | 5 | Seed chỉ chặn khi `NODE_ENV=production` | 🟡 | Chưa sửa [xác minh 18/10] |
@@ -45,7 +45,7 @@ Chi tiết, cách sửa: `docs/08-handoff/AUDIT.md` mục 5 (chỉ trên máy).
 
 ## 4. Tiếp theo (Thắng duyệt thứ tự 20/10)
 
-1. PR sửa `backup.sh` + RUNBOOK (gồm: gắn nhãn `prev` trước khi build; ghi chọn «Giám đốc» khi tạo tài khoản đầu tiên).
+1. Gộp PR `sua-backup-va-runbook`.
 2. Lên VPS test (chỉ dữ liệu mẫu, không nhận lead thật) → diễn tập sao lưu, khôi phục.
 3. Dựng giao diện bộ 2 «Web v2».
 
