@@ -113,3 +113,31 @@ Ghi thời gian khôi phục thực tế vào phiếu. Mục tiêu ≤ 4 giờ, 
 | anonymizeStaleLeads | 02:00 ngày 1 hằng tháng | Ẩn danh hoá lead không phát sinh liên hệ sau LEAD_RETENTION_MONTHS tháng |
 
 Tạm dừng khi bảo trì: `DISABLE_JOBS=true` rồi `docker compose up -d web`. Tác vụ lỗi hiện ở Quản trị → payload-jobs.
+
+## 10. Chạy sau nginx có sẵn (máy chủ dùng chung, ví dụ aaPanel)
+
+Dùng khi máy chủ đã có nginx giữ cổng 80/443 cho các website khác (VPS test dùng chung). **Máy chủ production riêng cho renco.vn dùng cách chuẩn với Caddy ở mục 2**, không dùng mục này.
+
+Khác cách chuẩn: không chạy Caddy; web mở ở `127.0.0.1:3100`; nginx của máy chủ lo HTTPS và chuyển tiếp vào. Lớp chặn `/admin` theo IP (`ADMIN_ALLOW_IPS`) nằm ở Caddy nên **không có hiệu lực** — trang quản trị chỉ còn mật khẩu, 2FA và khoá tài khoản.
+
+1. Thêm vào `.env` (ngoài các biến ở mục 2):
+
+   ```bash
+   COMPOSE_FILE=docker-compose.yml:deploy/compose.sau-nginx.yml
+   # WEB_LOCAL_PORT=3100   # đổi nếu cổng 3100 đã có chương trình khác dùng
+   ```
+
+   Nhờ dòng `COMPOSE_FILE`, mọi lệnh `docker compose …` ở các mục khác (kể cả `scripts/backup.sh`) chạy đúng như cũ mà không cần thêm `-f`.
+2. `docker compose up -d --build` → chỉ có `web` và `db` chạy. Kiểm tra: `curl -fsS http://127.0.0.1:3100/api/health` trả `{"ok":true,"db":"ok"}`.
+3. Trong bảng điều khiển của nginx (aaPanel: Website → Add site → tên miền), bật **Reverse proxy** tới `http://127.0.0.1:3100`, rồi bật SSL Let's Encrypt cho tên miền. Khối cấu hình chuyển tiếp phải có các dòng sau (aaPanel thường tự thêm — mở «Config file» của site để kiểm):
+
+   ```nginx
+   proxy_set_header Host $host;
+   proxy_set_header X-Real-IP $remote_addr;
+   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_set_header X-Forwarded-Proto $scheme;
+   client_max_body_size 20m;   # ảnh, PDF tải lên tới 20 MB
+   ```
+
+   Thiếu `X-Real-IP` thì mọi khách bị coi là cùng một IP: giới hạn 5 lần gửi form / 10 phút áp cho **cả website**. Thiếu `client_max_body_size` thì tải ảnh lớn trong trang quản trị báo lỗi 413.
+4. Chỉ sửa cấu hình của **đúng site này** trong aaPanel; không sửa cấu hình nginx chung — các website khác trên máy chủ dùng chung nó.
