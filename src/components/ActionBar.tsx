@@ -10,12 +10,16 @@ import { Icon } from './Icon'
 /** Thanh liên hệ cố định ở đáy màn hình điện thoại: Gọi · Zalo · Báo giá (UR-4). */
 export function ActionBar({ locale, dict, settings }: { locale: Locale; dict: Dict; settings: Setting }) {
   const phone = normalizePhone(settings.hotline ?? '') ?? settings.hotline
+  // Chưa có hotline hoặc Zalo thì bỏ nút đó, các nút còn lại chia đều chiều ngang.
+  const buttons = 1 + (phone ? 1 : 0) + (settings.zaloUrl ? 1 : 0)
   return (
-    <nav className="action-bar" aria-label={locale === 'vi' ? 'Liên hệ nhanh' : 'Quick contact'} style={settings.zaloUrl ? undefined : { gridTemplateColumns: '1fr 1fr' }}>
-      <a href={`tel:${phone}`}>
-        <Icon name="phone" />
-        {dict.common.call}
-      </a>
+    <nav className="action-bar" aria-label={locale === 'vi' ? 'Liên hệ nhanh' : 'Quick contact'} style={buttons === 3 ? undefined : { gridTemplateColumns: `repeat(${buttons}, 1fr)` }}>
+      {phone ? (
+        <a href={`tel:${phone}`}>
+          <Icon name="phone" />
+          {dict.common.call}
+        </a>
+      ) : null}
       {settings.zaloUrl ? (
         <a href={settings.zaloUrl} target="_blank" rel="noopener">
           <Icon name="chat" />

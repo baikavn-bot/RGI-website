@@ -28,8 +28,12 @@ export function normalizePhone(raw: string, country: string = 'VN'): string | nu
   return null
 }
 
-/** Hiển thị số đã chuẩn hoá theo kiểu Việt Nam: 0948 438 218. */
-export function formatPhoneVN(normalized: string): string {
+/**
+ * Hiển thị số đã chuẩn hoá theo kiểu Việt Nam: 0948 438 218.
+ * Chưa có số (ví dụ Cài đặt chưa nhập hotline trên database mới) thì trả chuỗi rỗng, không làm sập trang.
+ */
+export function formatPhoneVN(normalized?: string | null): string {
+  if (!normalized) return ''
   if (!normalized.startsWith('+84')) return normalized
   const local = '0' + normalized.slice(3)
   if (local.startsWith('02') && local.length === 11) return `${local.slice(0, 3)} ${local.slice(3, 7)} ${local.slice(7)}`

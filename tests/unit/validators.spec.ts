@@ -23,6 +23,11 @@ describe('T08 · chuẩn hoá số điện thoại', () => {
   it('hiển thị kiểu Việt Nam', () => {
     expect(formatPhoneVN('+84948438218')).toBe('0948 438 218')
   })
+  it('chưa có hotline (database mới) thì trả rỗng, không làm sập trang', () => {
+    expect(formatPhoneVN(undefined)).toBe('')
+    expect(formatPhoneVN(null)).toBe('')
+    expect(formatPhoneVN('')).toBe('')
+  })
 })
 
 describe('Mã số thuế, làm sạch nội dung', () => {

@@ -117,6 +117,7 @@ Lighthouse 12, giả lập điện thoại, mạng 4G chậm, máy chủ product
 - Khoá Cloudflare Turnstile thật trong `.env` production (thiếu khoá, mọi form bị từ chối).
 - Trang Điều khoản (WB01) và Chính sách dữ liệu (WB02) đã xuất bản. Form thu dữ liệu cá nhân dẫn tới hai trang này; bảng điều khiển quản trị báo đỏ khi chưa xuất bản.
 - SMTP thật, đã gửi thử tới hộp thư sales.
+- Cài đặt website đã nhập đủ (tên doanh nghiệp, mã số thuế, địa chỉ, **hotline**, email). Database mới chưa có Cài đặt thì website không sập nhưng ẩn mọi nút, link gọi hotline; các trang chưa có nội dung trong CMS trả 404.
 
 Lưu ý thêm: sửa chữ trong quy cách (cỡ, ghi chú) không qua bước Pháp chế duyệt; chỉ số liệu mới bị khoá về "đề xuất". Nếu RGI muốn duyệt cả phần này, làm ở V1.
 

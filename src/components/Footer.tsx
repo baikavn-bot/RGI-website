@@ -48,9 +48,11 @@ export function Footer({ locale, dict, settings }: { locale: Locale; dict: Dict;
           <div>
             <h2>{dict.nav.contact}</h2>
             <ul>
-              <li>
-                Hotline: <a href={`tel:${phone}`}>{formatPhoneVN(phone ?? '')}</a>
-              </li>
+              {phone ? (
+                <li>
+                  Hotline: <a href={`tel:${phone}`}>{formatPhoneVN(phone)}</a>
+                </li>
+              ) : null}
               <li>
                 Email: <a href={`mailto:${settings.email}`}>{settings.email}</a>
               </li>

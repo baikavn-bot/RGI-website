@@ -131,7 +131,7 @@ export function Breadcrumb({ items, label }: { items: { label: string; href?: st
   )
 }
 
-export function CtaBand({ locale, dict, title, accent, text, hotline }: { locale: Locale; dict: Dict; title: string; accent?: string; text: string; hotline: string }) {
+export function CtaBand({ locale, dict, title, accent, text, hotline }: { locale: Locale; dict: Dict; title: string; accent?: string; text: string; hotline?: string | null }) {
   return (
     <section className="section">
       <div className="wrap">
@@ -146,9 +146,11 @@ export function CtaBand({ locale, dict, title, accent, text, hotline }: { locale
             <Link className="btn btn--accent" href={href(locale, 'partners')}>
               {dict.nav.cta}
             </Link>
-            <a className="btn btn--ghost" href={`tel:${hotline.replace(/\s/g, '')}`}>
-              <Icon name="phone" size={18} /> {hotline}
-            </a>
+            {hotline ? (
+              <a className="btn btn--ghost" href={`tel:${hotline.replace(/\s/g, '')}`}>
+                <Icon name="phone" size={18} /> {hotline}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
