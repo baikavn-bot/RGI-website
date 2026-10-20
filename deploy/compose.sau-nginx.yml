@@ -1,0 +1,18 @@
+# File ghi đè cho máy chủ đã có sẵn nginx giữ cổng 80/443 (ví dụ VPS test dùng chung có aaPanel).
+# Khác bản chuẩn (docker-compose.yml) ở 2 điểm:
+#   1. Không chạy Caddy (dịch vụ caddy chỉ bật khi gọi --profile caddy).
+#   2. Mở web ở cổng nội bộ 127.0.0.1:${WEB_LOCAL_PORT:-3100} để nginx trên máy chủ chuyển tiếp vào.
+# Khi đó nginx lo HTTPS và PHẢI gửi kèm IP thật của khách: proxy_set_header X-Real-IP $remote_addr;
+# Lớp chặn /admin theo IP (ADMIN_ALLOW_IPS) nằm ở Caddy nên KHÔNG có hiệu lực ở cách chạy này.
+#
+# Dùng: thêm vào .env dòng   COMPOSE_FILE=docker-compose.yml:deploy/compose.sau-nginx.yml
+# để mọi lệnh "docker compose …" (kể cả scripts/backup.sh) tự đọc cả hai file. Chi tiết: docs/RUNBOOK.md mục 10.
+# Máy chủ production riêng cho renco.vn KHÔNG dùng file này.
+
+services:
+  web:
+    ports:
+      - '127.0.0.1:${WEB_LOCAL_PORT:-3100}:3000'
+
+  caddy:
+    profiles: ['caddy']
