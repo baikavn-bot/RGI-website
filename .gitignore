@@ -50,9 +50,18 @@ node_modules/
 /playwright/.cache/
 
 # RENCO
+# Mọi file .env (.env, .env.production, .env.staging…) chứa khoá bí mật — chỉ .env.example được lên git.
 .env
+.env.*
 !.env.example
 .seed-credentials
+# Bản sao lưu cơ sở dữ liệu, tệp tải lên (scripts/backup.sh) — có dữ liệu khách, không bao giờ lên git.
+*.dump
+*.sql
+*.sql.gz
+*.gpg
+*.tgz
+/backups/
 /uploads/
 /test-results/
 /playwright-report/
