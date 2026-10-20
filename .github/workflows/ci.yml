@@ -1,5 +1,9 @@
-# Mỗi pull request: kiểm tra kiểu, lint, test, build, quét lỗ hổng phụ thuộc (mục 20 blueprint).
-# Gộp vào main: build ảnh Docker. Lên production: bấm duyệt tay ở môi trường "production".
+# Mỗi pull request và mỗi lần gộp vào main (mục 20 yêu cầu v0.1):
+# - audit: quét lỗ hổng thư viện. Tách riêng để một lỗ hổng chưa có bản vá không chặn các bước kiểm khác.
+#   Job này có thể đỏ trong lúc chờ bản vá (xem TRANG-THAI.md); khoá main KHÔNG bắt buộc job này.
+# - check: kiểm kiểu, lint, test tích hợp, build, quét bí mật. Khoá main bắt buộc job này xanh.
+# - e2e: test giao diện, chạy sau khi check đạt.
+# Chưa có bước build ảnh Docker hay triển khai tự động.
 name: CI
 
 on:
@@ -8,6 +12,18 @@ on:
     branches: [main]
 
 jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --prod --audit-level=high
+
   check:
     runs-on: ubuntu-latest
     services:
@@ -28,13 +44,14 @@ jobs:
       TOTP_DISABLED: 'true'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # gitleaks cần lịch sử commit để quét
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm audit --prod --audit-level=high
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test:int
