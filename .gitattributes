@@ -1,0 +1,2 @@
+# Kịch bản chạy trên máy chủ Linux: luôn xuống dòng kiểu Linux (LF), kể cả khi sửa trên Windows.
+*.sh text eol=lf
