@@ -20,29 +20,31 @@ MVP v0.1 website renco.vn đã có mã đầy đủ trên GitHub (16/10/2026) v�
 | PR #1: bộ luật Claude Code (`CLAUDE.md`, `.claude/settings.json`, file này), README + HANDOVER bỏ chữ «Blueprint» | 20/10 | Đã gộp vào `main` [xác minh 20/10 — GitHub] |
 | Chạy thử trên máy: PostgreSQL bằng Docker, `pnpm dev`, `pnpm seed`; mọi trang chính trả 200 | 20/10 | [xác minh 20/10] |
 | Trên máy với pnpm 10.34.7: typecheck, lint đạt; `test:int` 52/52 đạt (DB test riêng); `build` đạt | 20/10 | [xác minh 20/10] |
-| PR `sua-ci-pnpm`: ghi rõ pnpm 10.34.7; tách `pnpm audit` thành job riêng | 20/10 | Chờ Thắng gộp; CI trên GitHub chưa chạy với thay đổi này |
+| PR #2 `sua-ci-pnpm`: ghi rõ pnpm 10.34.7; tách `pnpm audit` thành job riêng | 20/10 | Đã gộp. CI lần đầu chạy được: `check` xanh, `e2e` xanh, `audit` đỏ (chờ bản vá) [xác minh 20/10 — GitHub] |
+| PR `sua-trang-sap-thieu-hotline`: trang không còn sập khi Cài đặt chưa có hotline | 20/10 | Chờ Thắng gộp. Đã thử trên database trống: hết lỗi 500 [xác minh 20/10] |
 
 ## 3. Đang dở / rủi ro đã biết
 
 | # | Việc | Mức | Trạng thái |
 | --- | --- | --- | --- |
-| 1 | `main` chưa khoá (`protected: false`) | 🔴 | Thắng tự bật ruleset `bao-ve-main`. Chỉ tick «status checks» với job **`check`** sau khi job này xanh trên GitHub [xác minh 20/10] |
+| 1 | `main` chưa khoá: Thắng đã tạo ruleset `bao-ve-main` bắt buộc job `check`, nhưng API công khai của GitHub chưa thấy ruleset nào có hiệu lực trên `main` | 🔴 | [CẦN XÁC NHẬN] — kiểm trong Settings → Rules: «Enforcement status» phải là **Active**, đích là **Default branch** [xác minh 20/10] |
 | 2 | Lỗ hổng `braces` (GHSA-vfj7-8cjw-p6xm, qua `@payloadcms/next › sass › chokidar`) mức cao, **chưa có bản vá** | 🟡 | Thắng chốt: **không bỏ qua**, để job `audit` đỏ, theo dõi tới khi có bản vá. Mỗi phiên kiểm: `npx -y pnpm@10.34.7 audit --prod --audit-level=high` [xác minh 20/10] |
-| 3 | Trang tiếng Việt sập (500) khi Cài đặt chưa có hotline — xảy ra ngay trên database mới | 🔴 | Chưa sửa [xác minh 20/10 — gặp khi chạy thử] |
+| 3 | 13 trang tiếng Việt và 3 trang tiếng Anh sập (500) khi Cài đặt chưa có hotline — xảy ra ngay trên database mới | 🔴 | Đã sửa trong PR `sua-trang-sap-thieu-hotline`, chờ gộp [xác minh 20/10] |
 | 4 | `pnpm test:int` xoá sạch DB nếu thiếu `TEST_DATABASE_URL` | 🔴 | Chưa sửa [xác minh 18/10] |
 | 5 | RUNBOOK quay lui gắn nhãn sai; `backup.sh` ghi cứng tên ổ dữ liệu; chưa diễn tập khôi phục | 🔴 | Chưa sửa [xác minh 18/10] |
 | 6 | Bản production (Docker) chưa từng chạy thử | 🟡 | Chưa làm |
 | 7 | `.gitignore` không chặn `.env.*` (trừ `.local`) và file sao lưu | 🟡 | Chưa sửa [xác minh 18/10] |
 | 8 | `ADMIN_ALLOW_IPS` mặc định mở mọi IP; chặn IP không phủ `/api/users/login` | 🟡 | Chưa sửa [xác minh 18/10] |
 | 9 | Seed chỉ chặn khi `NODE_ENV=production` | 🟡 | Chưa sửa [xác minh 18/10] |
+| 11 | Chế độ dev lưu cache dữ liệu trên ổ đĩa (`.next/dev/cache/fetch-cache`), khởi động lại không xoá. Đổi database hoặc seed lại thì trang vẫn hiện dữ liệu cũ (từng gây lỗi 500 giả và 404 giả) | 🟢 | Cách xử lý: dừng dev, xoá thư mục `.next/dev/cache/fetch-cache`, bật lại dev [xác minh 20/10] |
 | 10 | `pnpm dev` sinh lại `src/payload-types.ts` khác bản commit (mất trường `hasTotp`) | 🟢 | Không commit bản sinh lại; tìm nguyên nhân khi đụng tới phần 2FA [xác minh 20/10] |
 
 Chi tiết, cách sửa: `docs/08-handoff/AUDIT.md` mục 5 (chỉ trên máy).
 
 ## 4. Tiếp theo (Thắng duyệt thứ tự 20/10)
 
-1. Gộp PR `sua-ci-pnpm` → job `check` xanh → Thắng bật khoá `main` bắt buộc `check`.
-2. PR sửa trang sập khi chưa có hotline. (Đề xuất gộp chung: chặn test xoá DB + vá `.gitignore`.)
+1. ~~Gộp PR `sua-ci-pnpm`~~ (xong 20/10). Kiểm lại ruleset `bao-ve-main` cho có hiệu lực (mục 3, dòng 1).
+2. Gộp PR `sua-trang-sap-thieu-hotline`. Kế tiếp: PR chặn test xoá DB + vá `.gitignore`.
 3. Chạy thử bản production bằng Docker trên máy.
 4. PR sửa `backup.sh` + RUNBOOK.
 5. Lên VPS test (chỉ dữ liệu mẫu, không nhận lead thật) → diễn tập sao lưu, khôi phục.

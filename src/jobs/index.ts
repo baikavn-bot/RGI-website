@@ -70,9 +70,21 @@ export const sendLeadEmailsTask: TaskConfig<{ input: { leadId: number; merged?: 
       await payload.sendEmail({
         to: lead.email,
         subject: vi ? `RENCO đã nhận yêu cầu ${lead.refCode}` : `RENCO received your request ${lead.refCode}`,
-        text: vi
-          ? `Chào anh/chị,\n\nRENCO đã nhận yêu cầu ${lead.refCode}. Bộ phận kinh doanh sẽ liên hệ lại${settings.responseTime ? ' ' + settings.responseTime : ''}.\nCần gấp, anh/chị gọi hotline ${settings.hotline}.\n\n${settings.companyName}\n${settings.address}`
-          : `Hello,\n\nRENCO has received request ${lead.refCode}. Our sales team will contact you${settings.responseTime ? ' ' + settings.responseTime : ''}.\nFor urgent matters, call ${settings.hotline}.\n\n${settings.companyName}\n${settings.address}`,
+        // Trường Cài đặt nào còn trống (database mới) thì bỏ dòng đó, không in chữ "undefined" vào email khách.
+        text: [
+          vi ? 'Chào anh/chị,' : 'Hello,',
+          '',
+          vi
+            ? `RENCO đã nhận yêu cầu ${lead.refCode}. Bộ phận kinh doanh sẽ liên hệ lại${settings.responseTime ? ' ' + settings.responseTime : ''}.`
+            : `RENCO has received request ${lead.refCode}. Our sales team will contact you${settings.responseTime ? ' ' + settings.responseTime : ''}.`,
+          settings.hotline ? (vi ? `Cần gấp, anh/chị gọi hotline ${settings.hotline}.` : `For urgent matters, call ${settings.hotline}.`) : null,
+          '',
+          settings.companyName,
+          settings.address,
+        ]
+          .filter((line) => line !== null && line !== undefined)
+          .join('\n')
+          .trimEnd(),
       })
       sent++
     }

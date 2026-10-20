@@ -357,7 +357,7 @@ export function LeadForm({ type, locale, dict, lines, consentText, hotline, pref
           {status === 'network' ? <p className="alert alert--error">{f.networkError}</p> : null}
           {status === 'server' ? (
             <p className="alert alert--error">
-              {f.serverError} <a href={`tel:${hotline}`}>{hotline}</a>
+              {f.serverError} {hotline ? <a href={`tel:${hotline.replace(/\s/g, '')}`}>{hotline}</a> : null}
             </p>
           ) : null}
           {status === 'disabled' ? <p className="alert alert--error">{f.disabled}</p> : null}

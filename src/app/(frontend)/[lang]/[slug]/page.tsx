@@ -80,20 +80,24 @@ export default async function StaticPage({ params, searchParams }: Params) {
           <p>
             {dict.thanks.next} {settings.responseTime ? `(${settings.responseTime})` : null}
           </p>
-          <p>
-            {dict.thanks.urgent}{' '}
-            <a href={`tel:${normalizePhone(settings.hotline)}`}>
-              <strong>{hotline}</strong>
-            </a>
-            {settings.zaloUrl ? (
-              <>
-                {' · '}
-                <a href={settings.zaloUrl} target="_blank" rel="noopener">
-                  Zalo
+          {hotline || settings.zaloUrl ? (
+            <p>
+              {dict.thanks.urgent}{' '}
+              {hotline ? (
+                <a href={`tel:${normalizePhone(settings.hotline) ?? settings.hotline}`}>
+                  <strong>{hotline}</strong>
                 </a>
-              </>
-            ) : null}
-          </p>
+              ) : null}
+              {settings.zaloUrl ? (
+                <>
+                  {hotline ? ' · ' : null}
+                  <a href={settings.zaloUrl} target="_blank" rel="noopener">
+                    Zalo
+                  </a>
+                </>
+              ) : null}
+            </p>
+          ) : null}
           <div className="btn-row" style={{ marginTop: 24 }}>
             <Link className="btn btn--primary" href={href(lang, 'products')}>
               {dict.common.viewProducts}
@@ -258,9 +262,11 @@ export default async function StaticPage({ params, searchParams }: Params) {
             <div className="card">
               <h2 style={{ fontSize: '1.5rem' }}>{settings.companyName}</h2>
               <ul className="contact-list">
-                <li style={{ display: 'flex', gap: 10 }}>
-                  <Icon name="phone" /> <a href={`tel:${phone}`}>{hotline}</a>
-                </li>
+                {phone ? (
+                  <li style={{ display: 'flex', gap: 10 }}>
+                    <Icon name="phone" /> <a href={`tel:${phone}`}>{hotline}</a>
+                  </li>
+                ) : null}
                 <li style={{ display: 'flex', gap: 10 }}>
                   <Icon name="mail" /> <a href={`mailto:${settings.email}`}>{settings.email}</a>
                 </li>
