@@ -24,7 +24,8 @@ MVP v0.1 website renco.vn đã có mã đầy đủ trên GitHub (16/10/2026) v�
 | PR #2: ghi rõ pnpm 10.34.7; tách `pnpm audit` thành job riêng | 20/10 | Đã gộp. CI lần đầu chạy được: `check`, `e2e` xanh; `audit` đỏ (chờ bản vá) [xác minh 20/10 — GitHub] |
 | PR #3: trang không còn sập (500) khi Cài đặt chưa có hotline — trước đó 13 trang tiếng Việt, 3 trang tiếng Anh sập trên database mới | 20/10 | Đã gộp. Thử trên database trống: hết lỗi 500 [xác minh 20/10] |
 | Khoá `main`: ruleset `bao-ve-main` có hiệu lực, bắt buộc PR + job `check` | 20/10 | [xác minh 20/10 — API GitHub thấy 4 luật: deletion, non_fast_forward, pull_request, required_status_checks = `check`] |
-| PR `chan-test-xoa-db-va-gitignore`: `test:int` tự dừng khi thiếu `TEST_DATABASE_URL` hoặc tên database không có đuôi `_test`; `.gitignore` chặn mọi `.env.*` (trừ `.env.example`) và file sao lưu | 20/10 | Chờ Thắng gộp. Đã thử: cả 2 trường hợp sai đều bị chặn trước khi kết nối, DB dev nguyên vẹn; 53/53 test đạt [xác minh 20/10] |
+| PR #4: `test:int` tự dừng khi thiếu `TEST_DATABASE_URL` hoặc tên database không có đuôi `_test`; `.gitignore` chặn mọi `.env.*` (trừ `.env.example`) và file sao lưu | 20/10 | Đã gộp. Đã thử: cả 2 trường hợp sai đều bị chặn trước khi kết nối, DB dev nguyên vẹn [xác minh 20/10] |
+| Chạy thử bản production trên máy: build ảnh từ `Dockerfile` (khoảng 1 phút, ảnh 364 MB, đúng pnpm 10.34.7), chạy với database trống, không Caddy, không seed | 20/10 | [xác minh 20/10] Migration tự chạy đủ 2 bản (48 bảng); `/api/health` ok; trang công khai không còn 500 (trang chưa có nội dung CMS trả 404); `SITE_ENV=staging` → robots chặn toàn bộ; có CSP, `x-frame-options`, `/admin` có `noindex`; API lead, người dùng, xuất CSV trả 403 khi chưa đăng nhập; form bị từ chối (`captcha_failed`) khi production chưa có khoá Turnstile, không lưu lead. Đã dọn sạch sau khi thử |
 
 ## 3. Đang dở / rủi ro đã biết
 
@@ -32,7 +33,8 @@ MVP v0.1 website renco.vn đã có mã đầy đủ trên GitHub (16/10/2026) v�
 | --- | --- | --- | --- |
 | 1 | Lỗ hổng `braces` (GHSA-vfj7-8cjw-p6xm, qua `@payloadcms/next › sass › chokidar`) mức cao, **chưa có bản vá** | 🟡 | Thắng chốt: **không bỏ qua**, để job `audit` đỏ, theo dõi tới khi có bản vá. Mỗi phiên kiểm: `npx -y pnpm@10.34.7 audit --prod --audit-level=high` [xác minh 20/10] |
 | 2 | RUNBOOK quay lui gắn nhãn sai; `backup.sh` ghi cứng tên ổ dữ liệu; chưa diễn tập khôi phục | 🔴 | Chưa sửa [xác minh 18/10] |
-| 3 | Bản production (Docker) chưa từng chạy thử | 🟡 | Chưa làm |
+| 3 | Form tạo tài khoản đầu tiên (`/admin` trên database mới) để ô **Vai trò mặc định là Sales**. Quên đổi sang Giám đốc thì tài khoản đầu tiên không tạo được người dùng khác, phải sửa thẳng trong database | 🟡 | Chọn «Giám đốc» thì lưu đúng [xác minh 20/10]. Cần ghi vào RUNBOOK mục 2; cân nhắc đổi mặc định khi chưa có người dùng nào |
+| 3b | Trang chủ trên database trống còn khối trống (ảnh hero, khối Nhà máy), số «750 tấn» viết cứng trong mã, chân trang hiện nhãn «Mã số doanh nghiệp:», «Trụ sở:», «Email:» không có giá trị | 🟢 | Không sập; xử lý khi dựng bộ 2 [xác minh 20/10 — chụp màn bản production] |
 | 4 | `ADMIN_ALLOW_IPS` mặc định mở mọi IP; chặn IP không phủ `/api/users/login` | 🟡 | Chưa sửa [xác minh 18/10] |
 | 5 | Seed chỉ chặn khi `NODE_ENV=production` | 🟡 | Chưa sửa [xác minh 18/10] |
 | 6 | Chế độ dev lưu cache dữ liệu trên ổ đĩa (`.next/dev/cache/fetch-cache`), khởi động lại không xoá. Đổi database hoặc seed lại thì trang vẫn hiện dữ liệu cũ (từng gây lỗi 500 giả và 404 giả) | 🟢 | Cách xử lý: dừng dev, xoá thư mục `.next/dev/cache/fetch-cache`, bật lại dev [xác minh 20/10] |
@@ -43,11 +45,9 @@ Chi tiết, cách sửa: `docs/08-handoff/AUDIT.md` mục 5 (chỉ trên máy).
 
 ## 4. Tiếp theo (Thắng duyệt thứ tự 20/10)
 
-1. Gộp PR `chan-test-xoa-db-va-gitignore`.
-2. Chạy thử bản production bằng Docker trên máy.
-3. PR sửa `backup.sh` + RUNBOOK.
-4. Lên VPS test (chỉ dữ liệu mẫu, không nhận lead thật) → diễn tập sao lưu, khôi phục.
-5. Dựng giao diện bộ 2 «Web v2».
+1. PR sửa `backup.sh` + RUNBOOK (gồm: gắn nhãn `prev` trước khi build; ghi chọn «Giám đốc» khi tạo tài khoản đầu tiên).
+2. Lên VPS test (chỉ dữ liệu mẫu, không nhận lead thật) → diễn tập sao lưu, khôi phục.
+3. Dựng giao diện bộ 2 «Web v2».
 
 ## 5. Việc RGI phải làm trước ra mắt
 
