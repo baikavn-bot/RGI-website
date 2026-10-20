@@ -67,6 +67,9 @@ pnpm build
 pnpm test:e2e        # cần pnpm dev đang chạy, DB dev đã seed
 ```
 
+- **pnpm phải đúng bản 10.34.7** (trường `packageManager` trong `package.json`; pnpm 9 không cài được). Máy có pnpm khác bản → chạy `npx -y pnpm@10.34.7 <lệnh>` thay cho `pnpm <lệnh>`; luật hỏi/cấm trong `.claude/settings.json` áp cho cả hai cách gọi.
+- **CI** (`.github/workflows/ci.yml`) có 3 job: `audit` (quét lỗ hổng, được phép đỏ khi chờ bản vá — xem `TRANG-THAI.md`), `check` (typecheck, lint, test:int, build, quét bí mật — **phải xanh**), `e2e`. Khoá `main` chỉ bắt buộc `check`.
+- `src/payload-types.ts`: `pnpm dev` có thể sinh lại file này khác bản đã commit. Chỉ commit khi chủ đích đổi cấu trúc dữ liệu; còn lại bỏ thay đổi: `git restore src/payload-types.ts`.
 - Trước khi báo xong: typecheck + lint + test:int + build đạt → với thay đổi giao diện, **chụp màn 375 và 1280, MỞ RA NHÌN**.
 - Đổi collection / field → tạo migration (`pnpm migrate:create`, **phải hỏi**), commit cùng `src/payload-types.ts`.
 - Sửa mã làm đổi chữ, số, hành vi → sửa `docs/` **cùng commit**.
@@ -97,3 +100,17 @@ pnpm test:e2e        # cần pnpm dev đang chạy, DB dev đã seed
 | Hướng dẫn biên tập nội dung cho RGI | `docs/HUONG-DAN-BIEN-TAP.md` |
 | Kết quả đo hiệu năng | `docs/lighthouse.md` |
 | Kiểm toán ban đầu, rủi ro, cách chạy thử | `docs/08-handoff/AUDIT.md` (chỉ trên máy) |
+
+## 8. Khối do `next dev` tự quản lý
+
+Khối tiếng Anh bên dưới do `next dev` tự chèn khi phát hiện agent; xoá đi thì lần chạy dev sau nó chèn lại. **Giữ nguyên, không sửa chữ bên trong** (sửa là bị ghi đè). Nội dung của nó chỉ là lời nhắc đọc tài liệu Next.js trong `node_modules/next/dist/docs/` trước khi viết mã — không thay luật nào ở trên.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

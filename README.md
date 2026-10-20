@@ -17,7 +17,9 @@ Giai đoạn 1: website giới thiệu song ngữ Việt – Anh, thu yêu cầu
 
 ## Chạy trên máy
 
-Cần Node 22, pnpm 10, PostgreSQL 16.
+Cần Node 22 trở lên, pnpm 10.34.7 (ghi ở `packageManager` trong `package.json`), PostgreSQL 16.
+
+pnpm 9 không cài được dự án (`pnpm-workspace.yaml` dùng tính năng của pnpm 10). Máy đang có pnpm khác bản thì dùng đúng bản dự án ghi mà không đổi pnpm trên máy: thay `pnpm` bằng `npx pnpm@10.34.7` trong các lệnh dưới, hoặc bật Corepack (`corepack enable`) một lần.
 
 ```bash
 cp .env.example .env          # sửa DATABASE_URL, PAYLOAD_SECRET; SITE_ENV=development
