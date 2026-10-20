@@ -1,10 +1,27 @@
 # Bàn giao kỹ thuật — renco.vn MVP
 
-Phiên bản mã: 0.1.0 · Ngày: 16/10/2026 · Căn cứ: Blueprint website renco.vn v0.1
+Phiên bản mã: 0.1.0 · Ngày: 16/10/2026 · Căn cứ: bản yêu cầu website renco.vn v0.1
 
-## 1. Đã làm theo blueprint
+## 0. Yêu cầu nằm ở đâu
 
-| Mục blueprint | Đã làm | Vị trí trong mã |
+Bản yêu cầu v0.1 không còn là một file riêng: nội dung đã chuyển thành cấu trúc trong mã. Chú thích trong mã ghi «mục N» (ví dụ «mục 18») là số mục của bản yêu cầu v0.1; tra bảng dưới để biết mục đó nằm ở file nào.
+
+| Cần biết | Xem ở |
+| --- | --- |
+| Vai trò, ai được làm gì (mục 3) | `src/lib/constants.ts` (`ROLES`), `src/access/index.ts`, `access` của từng collection |
+| Mô hình dữ liệu (mục 9) | `src/collections/*`, `src/globals/Settings.ts` |
+| Quy tắc nghiệp vụ BR-01 – BR-10 (mục 10) | bảng ở mục 2 bên dưới |
+| Luồng lead, form (mục 5, 14) | `src/collections/Leads.ts`, `src/endpoints/submitLead.ts`, `src/lib/schemas.ts` |
+| Trang, đường dẫn (mục 6) | `src/lib/routes.ts`, `src/proxy.ts`, `src/app/(frontend)` |
+| Chữ trên khung giao diện | `src/lib/i18n.ts` (chữ trên trang nằm trong CMS) |
+| Bảo mật (mục 18) | `src/payload.config.ts`, `src/collections/Users.ts`, `next.config.ts`, `deploy/Caddyfile` |
+| Vận hành (mục 20) | `docs/RUNBOOK.md`, `docker-compose.yml`, `scripts/backup.sh` |
+| Câu hỏi còn mở (mục 25) | mục 6 bên dưới, điểm 7 |
+| Giao diện | Figma «RENCO — Copy», phần website ở page 28 – 32: https://www.figma.com/design/Mp7nKLeFFubPEKOEpsClVr/RENCO-%E2%80%94--Copy- (nguồn chân lý giao diện từ 20/10/2026) |
+
+## 1. Đã làm theo yêu cầu v0.1
+
+| Mục yêu cầu v0.1 | Đã làm | Vị trí trong mã |
 | --- | --- | --- |
 | 3. Vai trò | 6 vai trò nội bộ: Giám đốc, Quản lý marketing, Sales, Biên tập, Pháp chế, Quản trị kỹ thuật; kiểm quyền ở backend | `src/access`, `access` của từng collection |
 | 4. Chức năng MVP | Trang công khai Việt – Anh, catalog 5 dòng, 6 loại form, quản trị lead, CMS có duyệt, nhật ký | — |
@@ -86,7 +103,7 @@ Thay đổi cấu trúc dữ liệu nằm ở migration `20261016_043826_review_
 
 Lighthouse 12, giả lập điện thoại, mạng 4G chậm, máy chủ production chạy cục bộ. Kết quả ghi trong `docs/lighthouse.md` sau mỗi lần đo.
 
-## 5. Khác với blueprint
+## 5. Khác với yêu cầu v0.1
 
 - **Trang dựng ở server mỗi lượt xem, dữ liệu lấy từ cache** thay cho trang tĩnh. Kết quả với người xem như nhau (thời gian phản hồi 20–130 ms), nhưng build không cần kết nối cơ sở dữ liệu và nội dung mới hiện ngay khi xuất bản.
 - **Xem trước bản nháp** chưa làm. Biên tập lưu nháp, Quản lý marketing xuất bản rồi xem trên website.
@@ -111,7 +128,7 @@ Lưu ý thêm: sửa chữ trong quy cách (cỡ, ghi chú) không qua bước P
 4. Giao bảng dữ liệu sản phẩm chuẩn (mã, tên Việt – Anh, cỡ, số liệu đã nhà máy xác nhận).
 5. Rà quyền dùng 14 ảnh mẫu; thay ảnh hero bằng ảnh độ phân giải cao (≥ 1600 px).
 6. Tải catalog, hồ sơ năng lực bản PDF đã duyệt vào mục Tài liệu.
-7. Trả lời các câu hỏi mở ở mục 25 blueprint (Zalo, màu RC-W, chữ "tái chế" trong tên sản phẩm, có nộp WB03 không).
+7. Trả lời các câu hỏi mở của yêu cầu v0.1, mục 25 (Zalo, màu RC-W, chữ "tái chế" trong tên sản phẩm, có nộp WB03 không).
 
 ## 7. Dữ liệu mẫu
 
