@@ -1,6 +1,6 @@
 # renco.vn — Website thương hiệu RENCO
 
-Mã nguồn MVP website renco.vn của Công ty TNHH Renvindo Greenplast International (RGI), dựng theo Blueprint website renco.vn bản 0.1 (16/10/2026).
+Mã nguồn MVP website renco.vn của Công ty TNHH Renvindo Greenplast International (RGI), dựng theo bản yêu cầu v0.1 (16/10/2026). Bản yêu cầu không còn là một file riêng: nội dung đã chuyển thành cấu trúc trong mã. Muốn biết yêu cầu nào nằm ở file nào, xem `docs/HANDOVER.md` mục 0. Giao diện theo Figma (link ở `docs/HANDOVER.md` mục 0).
 
 Giai đoạn 1: website giới thiệu song ngữ Việt – Anh, thu yêu cầu hợp tác từ ba kênh B2B. Không có giá, giỏ hàng, đặt hàng. Mô hình dữ liệu và phân quyền đã chừa chỗ cho cổng đối tác giai đoạn 2.
 
@@ -39,7 +39,7 @@ pnpm test:int     # 41 test: BR-01 – BR-10, phân quyền, form, dữ liệu c
 pnpm test:e2e     # 17 test giao diện, form, bảo mật trên máy chủ đang chạy (đã seed)
 ```
 
-Bảng đối chiếu test với mục 21 blueprint: `docs/HANDOVER.md`.
+Bảng đối chiếu quy tắc nghiệp vụ với test: `docs/HANDOVER.md` mục 2.
 
 ## Triển khai production
 
