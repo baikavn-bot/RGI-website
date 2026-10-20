@@ -39,7 +39,17 @@ Website **renco.vn** của **RGI** (Công ty TNHH Renvindo Greenplast Internatio
 
 ## 3. Nguồn chân lý
 
-- **Giao diện: Figma «RENCO — Copy»**, phần website ở **page 28 – 32**: https://www.figma.com/design/Mp7nKLeFFubPEKOEpsClVr/RENCO-%E2%80%94--Copy- (Thắng chốt 20/10/2026; bản sao này thay bản cũ). Code ↔ Figma lệch → Figma thắng; Figma ↔ quyết định đã ghi lệch → hỏi Thắng.
+- **Giao diện: Figma «RENCO — Copy»** (file `Mp7nKLeFFubPEKOEpsClVr`), phần website ở **page 28 – 32** (Thắng chốt 20/10/2026; bản sao này thay bản cũ). Code ↔ Figma lệch → Figma thắng; Figma ↔ quyết định đã ghi lệch → hỏi Thắng.
+
+  | Page | Node | Nội dung |
+  | --- | --- | --- |
+  | 28 — Web · Foundations | `290:11455` | Biến màu Light/Dark (tên khớp CSS trong `styles.css`), chữ, khoảng cách, bo góc, đổ bóng, điểm ngắt |
+  | 29 — Web · Components | `290:11456` | Icon, nút, badge, form, thẻ, bảng quy cách, header, footer; mục «Web v2 · Components» |
+  | 30 — Web · Screens (UI/UX) | `290:11457` | Bộ 1: màn desktop D1–D5, mobile M1–M3, ghi chú UX |
+  | 31 — Web v2 · Art direction | `331:69` | Bộ 2: màu theo vai trò, cỡ chữ lớn, nguyên tắc, chuyển động, tài sản ảnh/3D |
+  | 32 — Web v2 · Screens | `331:70` | Bộ 2: màn V2-D1–D4, V2-M1 |
+
+  Link một node: `https://www.figma.com/design/Mp7nKLeFFubPEKOEpsClVr/RENCO-%E2%80%94--Copy-?node-id=<node, đổi : thành ->`. Bộ nào đang dùng để dựng: xem `TRANG-THAI.md`.
 - **Yêu cầu, quy tắc:** bản yêu cầu v0.1 đã chuyển vào mã. Tra «yêu cầu nào ở file nào»: `docs/HANDOVER.md` mục 0. Chú thích «mục N» trong mã = số mục của bản yêu cầu v0.1.
 - **Khác yêu cầu chỗ nào, việc RGI phải làm:** `docs/HANDOVER.md` mục 5, 6.
 - **Token giao diện:** `src/app/(frontend)/[lang]/styles.css`. Không tự chế màu / chữ / khoảng cách — thiếu thì hỏi Thắng.

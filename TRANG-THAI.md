@@ -15,7 +15,7 @@ MVP v0.1 website renco.vn đã có mã đầy đủ trên GitHub (16/10/2026). *
 | Mã MVP v0.1 lên `main` (3 commit, danh tính BAIKA) | 16/10 | [xác minh 18/10 — git log] |
 | Bản sao repo trên máy Thắng | 16/10 | [xác minh 18/10] |
 | Kiểm toán ban đầu chỉ đọc (báo cáo `docs/08-handoff/AUDIT.md`, chỉ trên máy) | 18/10 | [xác minh 18/10] |
-| Chốt Figma «RENCO — Copy» page 28 – 32 làm nguồn chân lý giao diện | 20/10 | Thắng chốt. Tèo mở được file nhưng công cụ Figma chỉ thấy page «00 — Read Me / Governance» và «02 — Marketing Components», **chưa thấy page 28 – 32** [CẦN XÁC NHẬN] |
+| Chốt Figma «RENCO — Copy» page 28 – 32 làm nguồn chân lý giao diện | 20/10 | Thắng chốt. [xác minh 20/10 — Tèo đọc được cả 5 page qua node ID, bảng ở `CLAUDE.md` mục 3] |
 | Bộ luật cho Claude Code: `CLAUDE.md`, `.claude/settings.json`, file này; README + HANDOVER trỏ đúng file thay cho chữ «Blueprint» | 20/10 | PR `thiet-lap-claude-code` — chờ Thắng gộp |
 
 ## 3. Đang dở / rủi ro đã biết
@@ -29,6 +29,7 @@ MVP v0.1 website renco.vn đã có mã đầy đủ trên GitHub (16/10/2026). *
 | 5 | `.gitignore` không chặn `.env.*` (trừ `.local`) và file sao lưu | 🟡 | Chưa sửa [xác minh 18/10] |
 | 6 | `ADMIN_ALLOW_IPS` mặc định mở mọi IP; chặn IP không phủ `/api/users/login` | 🟡 | Chưa sửa [xác minh 18/10] |
 | 7 | Seed chỉ chặn khi `NODE_ENV=production` | 🟡 | Chưa sửa [xác minh 18/10] |
+| 8 | Figma có **hai bộ giao diện**: bộ 1 (page 29 – 30, nền sáng) và bộ 2 «Web v2» (page 31 – 32, nền xanh sâu, ảnh tràn, 3D, thêm cỡ chữ lớn và màu nền Pine). Chưa chốt dựng theo bộ nào | 🟡 | [CẦN XÁC NHẬN] — chặn mọi việc sửa giao diện [xác minh 20/10] |
 
 Chi tiết từng điểm, cách sửa: `docs/08-handoff/AUDIT.md` mục 5 (chỉ trên máy).
 

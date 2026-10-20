@@ -17,7 +17,7 @@ Bản yêu cầu v0.1 không còn là một file riêng: nội dung đã chuyể
 | Bảo mật (mục 18) | `src/payload.config.ts`, `src/collections/Users.ts`, `next.config.ts`, `deploy/Caddyfile` |
 | Vận hành (mục 20) | `docs/RUNBOOK.md`, `docker-compose.yml`, `scripts/backup.sh` |
 | Câu hỏi còn mở (mục 25) | mục 6 bên dưới, điểm 7 |
-| Giao diện | Figma «RENCO — Copy», phần website ở page 28 – 32: https://www.figma.com/design/Mp7nKLeFFubPEKOEpsClVr/RENCO-%E2%80%94--Copy- (nguồn chân lý giao diện từ 20/10/2026) |
+| Giao diện | Figma «RENCO — Copy», phần website ở page 28 – 32 (node `290:11455`, `290:11456`, `290:11457`, `331:69`, `331:70`): https://www.figma.com/design/Mp7nKLeFFubPEKOEpsClVr/RENCO-%E2%80%94--Copy- — nguồn chân lý giao diện từ 20/10/2026. Bảng từng page: `CLAUDE.md` mục 3 |
 
 ## 1. Đã làm theo yêu cầu v0.1
 
