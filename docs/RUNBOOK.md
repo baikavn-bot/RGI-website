@@ -22,6 +22,15 @@ docker compose up -d --build
 docker compose logs -f web      # chờ "Migrated" và "Ready"
 ```
 
+**`ADMIN_ALLOW_IPS`** (IP được vào `/admin`): các IP ngăn cách bằng **dấu cách**, ví dụ `ADMIN_ALLOW_IPS="203.0.113.5/32 2001:db8::/48"`. Ghi dấu phẩy thì Caddy không khởi động được và **cả website sập**, không chỉ trang quản trị. Mỗi lần sửa biến này, kiểm trước rồi mới khởi động lại Caddy:
+
+```bash
+docker compose run --rm --no-deps caddy caddy validate --config /etc/caddy/Caddyfile   # phải có "Valid configuration"
+docker compose up -d caddy
+```
+
+Lớp chặn này chỉ phủ `/admin`; `/api/*` (kể cả đăng nhập `/api/users/login`) vẫn mở, chỉ còn mật khẩu, 2FA và khoá tài khoản bảo vệ.
+
 Mở `https://renvindo.com/admin`, tạo tài khoản đầu tiên. **Ô «Vai trò» mặc định là Sales — đổi thành «Giám đốc»** trước khi bấm Tạo; quên đổi thì tài khoản này không tạo được người dùng khác và phải sửa thẳng trong cơ sở dữ liệu. Quét mã xác thực hai lớp. Giám đốc tạo các tài khoản còn lại (mỗi người một tài khoản).
 
 Ngay sau đó, nhập **Cài đặt website** (tên doanh nghiệp, mã số thuế, địa chỉ, hotline, email). Chưa nhập thì website ẩn mọi nút gọi, chân trang để trống. Email liên hệ: `greenplast.renco689@gmail.com`. Ở **Cài đặt website → Email nhận thông báo lead**, thêm cùng địa chỉ này để sales nhận thông báo khi có lead.
