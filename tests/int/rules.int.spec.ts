@@ -45,7 +45,7 @@ beforeAll(async () => {
       companyName: 'RGI',
       taxCode: '0319717793',
       address: 'TP. Hồ Chí Minh',
-      hotline: '0948438218',
+      hotline: '0948391202',
       email: 'sales@renco.test',
       forms: { distributor: true, retailer: true, contractor: true, sample: true, contact: true },
       consent: { policyVersion: 'WB02-test', text: 'Tôi đồng ý' },
