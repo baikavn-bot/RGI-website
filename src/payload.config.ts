@@ -32,7 +32,7 @@ const dirname = path.dirname(filename)
 
 const email = process.env.SMTP_HOST
   ? nodemailerAdapter({
-      defaultFromAddress: process.env.EMAIL_FROM || 'no-reply@renvindo.com',
+      defaultFromAddress: process.env.EMAIL_FROM || 'greenplast.renco689@gmail.com',
       defaultFromName: process.env.EMAIL_FROM_NAME || 'RENCO',
       transportOptions: {
         host: process.env.SMTP_HOST,

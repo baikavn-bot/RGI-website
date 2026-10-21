@@ -19,7 +19,7 @@ export const SETTINGS = {
   },
   representative: 'Nguyễn Thị Xuân Mai — Giám đốc',
   hotline: '0948 438 218',
-  email: 'sales@renvindo.com',
+  email: 'greenplast.renco689@gmail.com',
   // [CẦN XÁC NHẬN] cam kết thời gian phản hồi — để trống tới khi Giám đốc chốt
   responseTime: { vi: '', en: '' },
   consentText: {

@@ -24,7 +24,14 @@ docker compose logs -f web      # chờ "Migrated" và "Ready"
 
 Mở `https://renvindo.com/admin`, tạo tài khoản đầu tiên. **Ô «Vai trò» mặc định là Sales — đổi thành «Giám đốc»** trước khi bấm Tạo; quên đổi thì tài khoản này không tạo được người dùng khác và phải sửa thẳng trong cơ sở dữ liệu. Quét mã xác thực hai lớp. Giám đốc tạo các tài khoản còn lại (mỗi người một tài khoản).
 
-Ngay sau đó, nhập **Cài đặt website** (tên doanh nghiệp, mã số thuế, địa chỉ, hotline, email). Chưa nhập thì website ẩn mọi nút gọi, chân trang để trống.
+Ngay sau đó, nhập **Cài đặt website** (tên doanh nghiệp, mã số thuế, địa chỉ, hotline, email). Chưa nhập thì website ẩn mọi nút gọi, chân trang để trống. Email liên hệ: `greenplast.renco689@gmail.com`. Ở **Cài đặt website → Email nhận thông báo lead**, thêm cùng địa chỉ này để sales nhận thông báo khi có lead.
+
+**Gửi email qua Gmail của công ty** (Thắng chốt 21/10/2026, chưa có hộp thư theo tên miền `@renvindo.com`):
+
+1. Đăng nhập Gmail công ty → Tài khoản Google → **Bảo mật** → bật **Xác minh 2 bước** → **Mật khẩu ứng dụng** → tạo một mật khẩu tên `website` (16 ký tự). Chỉ dán vào `.env` trên máy chủ, không gửi qua chat, không ghi vào file nào khác.
+2. Trong `.env`: `SMTP_HOST=smtp.gmail.com` · `SMTP_PORT=587` · `SMTP_SECURE=false` · `SMTP_USER=` và `EMAIL_FROM=` là địa chỉ Gmail công ty · `SMTP_PASS=` mật khẩu ứng dụng vừa tạo.
+3. `docker compose up -d web`, gửi thử một form, kiểm hộp thư. Gmail giới hạn khoảng 500 email/ngày — đủ cho lượng lead B2B.
+4. Đổi mật khẩu Gmail hoặc thu hồi mật khẩu ứng dụng → website ngừng gửi email cho tới khi cập nhật `SMTP_PASS`.
 
 Chạy thử sao lưu một lần (`./scripts/backup.sh`), kiểm log có dòng `backup ok`, rồi mới cài cron (mục 5).
 
