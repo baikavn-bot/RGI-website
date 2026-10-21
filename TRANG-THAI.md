@@ -45,16 +45,17 @@ MVP v0.1 website renvindo.com đã có mã đầy đủ trên GitHub (16/10/2026
 | 7 | `pnpm dev` sinh lại `src/payload-types.ts` khác bản commit (mất trường `hasTotp`) | 🟢 | Không commit bản sinh lại; tìm nguyên nhân khi đụng tới phần 2FA [xác minh 20/10] |
 | 8 | Trang chưa có nội dung trong CMS trả 404 (database mới) | 🟢 | Đúng hành vi mong muốn; ghi ở `docs/HANDOVER.md` mục 6 [xác minh 20/10] |
 | 9 | VPS test dùng chung có nginx (aaPanel) giữ cổng 80/443 → Caddy không chạy được | 🟡 | Thắng duyệt 20/10: VPS test chạy **sau nginx** (`deploy/compose.sau-nginx.yml`, RUNBOOK mục 10), không Caddy. Hệ quả: VPS test **không thử được `deploy/Caddyfile`** và không có lớp chặn `/admin` theo IP — thử Caddyfile trên máy trước khi lên production [xác minh 20/10 — cổng 80/443 do nginx giữ] |
-| 10 | **Đổi tên miền sang `renvindo.com`** (`renco.vn` đã thuộc người khác) , **email sang Gmail công ty** và **hotline mới** | 🟡 | Đã đổi trong mã, dữ liệu mẫu, tài liệu, `.env.example` (PR #10, #11). Email công ty `greenplast.renco689@gmail.com` (Thắng chốt 21/10): hiện trên website, nhận lead, gửi đi qua SMTP Gmail (RUNBOOK mục 2). Hotline công ty `0948 391 202` (Thắng chốt 21/10) thay số cũ trong dữ liệu mẫu, test, Figma. **Còn:** dòng `EMAIL_FROM` trong `.env.example` (Thắng sửa tay — luật chặn agent sửa `.env.*`); Cài đặt website trên **VPS test** vẫn ghi `sales@renco.vn` và hotline cũ (sửa trong trang quản trị); Figma đổi `renco.vn` → `renvindo.com` và email [xác minh 21/10] |
+| 10 | **Tên miền `renvindo.com`, email `greenplast.renco689@gmail.com`, hotline `0948 391 202`** (`renco.vn` đã thuộc người khác; Thắng chốt 21/10) | 🟢 | Đã đổi trong mã, dữ liệu mẫu, test, tài liệu, `.env.example` (PR #10, #11, #12) và Figma (130 + 92 ô chữ) [xác minh 21/10]. **Còn:** Cài đặt website trên VPS test vẫn là dữ liệu cũ (Thắng sửa trong trang quản trị); **mã QR** trong Figma (ảnh, 16 chỗ) chưa tạo lại — Thắng quyết sau |
 
 Chi tiết, cách sửa: `docs/08-handoff/AUDIT.md` mục 5 (chỉ trên máy).
 
 ## 4. Tiếp theo (Thắng duyệt thứ tự 20/10)
 
-1. Gộp PR `doi-email-gmail-cong-ty`; sửa email trong Cài đặt website trên VPS test.
+1. Thắng sửa Cài đặt website trên VPS test (hotline, email, email nhận thông báo lead).
 2. Thử `deploy/Caddyfile` trên máy (VPS test không thử được).
 3. Dựng giao diện bộ 2 «Web v2» (cập nhật VPS test theo RUNBOOK mục 3 sau mỗi lần gộp để xem trước).
-4. Trước production: build ảnh ở nơi khác thay vì trên máy chủ nhỏ (đề xuất GitHub Actions); chọn nơi lưu sao lưu thật; diễn tập quay lui.
+4. **Để sau (Thắng giao 21/10, nhắc lại khi xong việc quan trọng):** cập nhật giao diện trang quản trị (CMS) cho RENCO; tạo lại mã QR trong Figma.
+5. Trước khi trỏ `renvindo.com` về VPS test: dữ liệu thật (không seed), trang pháp lý đã duyệt, khoá Turnstile, SMTP Gmail, `SITE_ENV=production` + build lại, chặn `/admin` theo IP trong nginx, sao lưu ra nơi lưu khác; build ảnh ở nơi khác thay vì trên máy chủ nhỏ (đề xuất GitHub Actions); diễn tập quay lui.
 
 ## 5. Việc RGI phải làm trước ra mắt
 
