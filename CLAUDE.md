@@ -1,4 +1,4 @@
-# CLAUDE.md — luật repo `RGI-website` (renco.vn)
+# CLAUDE.md — luật repo `RGI-website` (renvindo.com)
 
 *Cập nhật 20/10/2026 · áp dụng cho **mọi agent**. Đọc hết trước khi sửa bất cứ dòng nào. Repo **CÔNG KHAI**.*
 
@@ -18,7 +18,7 @@
 
 ## 1. Dự án này là gì
 
-Website **renco.vn** của **RGI** (Công ty TNHH Renvindo Greenplast International, thương hiệu **RENCO**). BAIKA làm. Giới thiệu song ngữ Việt – Anh, thu yêu cầu hợp tác B2B. Không giá, không giỏ hàng.
+Website **renvindo.com** của **RGI** (Công ty TNHH Renvindo Greenplast International, thương hiệu **RENCO**). BAIKA làm. Giới thiệu song ngữ Việt – Anh, thu yêu cầu hợp tác B2B. Không giá, không giỏ hàng. Tên miền chính thức `renvindo.com` (21/10/2026; thay `renco.vn` đã thuộc người khác). Thương hiệu sản phẩm vẫn là RENCO.
 
 **Khác site tĩnh:** có cơ sở dữ liệu, trang quản trị, **dữ liệu cá nhân của khách**, máy chủ ảo (VPS). Sai một lệnh có thể mất hoặc lộ dữ liệu thật → cẩn trọng hơn mặc định.
 
@@ -36,6 +36,7 @@ Website **renco.vn** của **RGI** (Công ty TNHH Renvindo Greenplast Internatio
 - Hiện nhãn «Hợp quy» hay số liệu `proposed` bằng cách sửa giao diện. Quy tắc nghiệp vụ nằm ở hook backend (`docs/HANDOVER.md` mục 2).
 - Đặt `TOTP_DISABLED=true` ngoài test tự động (tắt xác thực hai lớp).
 - Push `main`, force push, `git config`, viết lại lịch sử đã push.
+- Dùng tên miền `renco.vn` ở bất kỳ đâu (link, email, cấu hình): tên miền cũ trong bản yêu cầu v0.1, **đã thuộc người khác**. Tên miền chính thức: `renvindo.com`.
 
 ## 3. Nguồn chân lý
 

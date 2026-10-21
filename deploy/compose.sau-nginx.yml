@@ -7,7 +7,7 @@
 #
 # Dùng: thêm vào .env dòng   COMPOSE_FILE=docker-compose.yml:deploy/compose.sau-nginx.yml
 # để mọi lệnh "docker compose …" (kể cả scripts/backup.sh) tự đọc cả hai file. Chi tiết: docs/RUNBOOK.md mục 10.
-# Máy chủ production riêng cho renco.vn KHÔNG dùng file này.
+# Máy chủ production riêng cho renvindo.com KHÔNG dùng file này.
 
 services:
   web:

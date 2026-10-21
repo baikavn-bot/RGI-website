@@ -1,10 +1,10 @@
-# Hướng dẫn biên tập nội dung renco.vn
+# Hướng dẫn biên tập nội dung renvindo.com
 
 Dành cho Biên tập, Quản lý marketing, Pháp chế. Không cần biết code.
 
 ## Đăng nhập
 
-1. Mở `https://renco.vn/admin`, nhập email và mật khẩu.
+1. Mở `https://renvindo.com/admin`, nhập email và mật khẩu.
 2. Lần đầu: mở Google Authenticator (hoặc Microsoft Authenticator), quét mã QR trên màn hình, nhập 6 chữ số.
 3. Những lần sau: nhập 6 chữ số trong ứng dụng sau khi nhập mật khẩu.
 
@@ -70,4 +70,4 @@ Bán hàng → Lead.
 - Sales đổi **Trạng thái** theo thứ tự: Mới → Đã liên hệ → Đủ điều kiện → Đã gửi mẫu / Đã gửi chính sách, báo giá → Thành đối tác hoặc Không thành (phải chọn lý do).
 - Ghi chú cuộc gọi, mã vận đơn gửi mẫu: Bán hàng → Hoạt động lead → tạo mới, chọn lead.
 - Cột **Quá hạn** bật khi lead "Mới" quá 1 ngày làm việc.
-- Xuất CSV (Quản lý marketing, Giám đốc): mở `https://renco.vn/api/leads/export` khi đang đăng nhập; thêm `?status=new&from=2026-11-01` để lọc. Mỗi lần xuất được ghi nhật ký.
+- Xuất CSV (Quản lý marketing, Giám đốc): mở `https://renvindo.com/api/leads/export` khi đang đăng nhập; thêm `?status=new&from=2026-11-01` để lọc. Mỗi lần xuất được ghi nhật ký.
