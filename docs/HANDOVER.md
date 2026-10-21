@@ -1,6 +1,6 @@
-# Bàn giao kỹ thuật — renco.vn MVP
+# Bàn giao kỹ thuật — renvindo.com MVP
 
-Phiên bản mã: 0.1.0 · Ngày: 16/10/2026 · Căn cứ: bản yêu cầu website renco.vn v0.1
+Phiên bản mã: 0.1.0 · Ngày: 16/10/2026 · Căn cứ: bản yêu cầu website renco.vn v0.1 (tên miền nay là renvindo.com)
 
 ## 0. Yêu cầu nằm ở đâu
 
@@ -123,7 +123,7 @@ Lưu ý thêm: sửa chữ trong quy cách (cỡ, ghi chú) không qua bước P
 
 **Việc chuẩn bị:**
 
-1. Đăng ký `renco.vn` đứng tên RGI; tạo hộp thư `sales@renco.vn`, cấu hình SPF, DKIM, DMARC.
+1. Tên miền chính thức: `renvindo.com` (RGI đã có, 21/10/2026; DNS ở ZoneDNS). Tạo hộp thư `sales@renvindo.com`, `no-reply@renvindo.com`; cấu hình SPF, DKIM, DMARC cho `renvindo.com`. **Không dùng `renco.vn`** (tên miền cũ trong bản yêu cầu v0.1): đã thuộc người khác — link, email trỏ về đó sẽ tới tay người lạ.
 2. Thuê máy chủ ảo tại Việt Nam; tạo tài khoản Cloudflare Turnstile.
 3. Pháp chế dán WB01, WB02 vào trang pháp lý; chốt câu đồng ý và thời hạn giữ lead.
 4. Giao bảng dữ liệu sản phẩm chuẩn (mã, tên Việt – Anh, cỡ, số liệu đã nhà máy xác nhận).

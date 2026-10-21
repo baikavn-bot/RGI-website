@@ -19,7 +19,7 @@ export const SETTINGS = {
   },
   representative: 'Nguyễn Thị Xuân Mai — Giám đốc',
   hotline: '0948 438 218',
-  email: 'sales@renco.vn',
+  email: 'sales@renvindo.com',
   // [CẦN XÁC NHẬN] cam kết thời gian phản hồi — để trống tới khi Giám đốc chốt
   responseTime: { vi: '', en: '' },
   consentText: {

@@ -1,4 +1,4 @@
-# Website renco.vn — ảnh Docker cho production (Next.js standalone + Payload CMS).
+# Website renvindo.com — ảnh Docker cho production (Next.js standalone + Payload CMS).
 # Build không cần cơ sở dữ liệu; migration chạy tự động khi máy chủ khởi động (prodMigrations).
 
 FROM node:22.22.0-alpine AS base
@@ -14,7 +14,7 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Biến NEXT_PUBLIC_* được nhúng lúc build
-ARG NEXT_PUBLIC_SITE_URL=https://renco.vn
+ARG NEXT_PUBLIC_SITE_URL=https://renvindo.com
 ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY=
 ARG NEXT_PUBLIC_UMAMI_SRC=
 ARG NEXT_PUBLIC_UMAMI_ID=

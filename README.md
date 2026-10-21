@@ -1,6 +1,6 @@
-# renco.vn — Website thương hiệu RENCO
+# renvindo.com — Website thương hiệu RENCO
 
-Mã nguồn MVP website renco.vn của Công ty TNHH Renvindo Greenplast International (RGI), dựng theo bản yêu cầu v0.1 (16/10/2026). Bản yêu cầu không còn là một file riêng: nội dung đã chuyển thành cấu trúc trong mã. Muốn biết yêu cầu nào nằm ở file nào, xem `docs/HANDOVER.md` mục 0. Giao diện theo Figma (link ở `docs/HANDOVER.md` mục 0).
+Mã nguồn MVP website renvindo.com của Công ty TNHH Renvindo Greenplast International (RGI), dựng theo bản yêu cầu v0.1 (16/10/2026). Bản yêu cầu không còn là một file riêng: nội dung đã chuyển thành cấu trúc trong mã. Muốn biết yêu cầu nào nằm ở file nào, xem `docs/HANDOVER.md` mục 0. Giao diện theo Figma (link ở `docs/HANDOVER.md` mục 0).
 
 Giai đoạn 1: website giới thiệu song ngữ Việt – Anh, thu yêu cầu hợp tác từ ba kênh B2B. Không có giá, giỏ hàng, đặt hàng. Mô hình dữ liệu và phân quyền đã chừa chỗ cho cổng đối tác giai đoạn 2.
 

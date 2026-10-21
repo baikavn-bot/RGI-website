@@ -1,6 +1,6 @@
 /**
  * Hằng số dùng chung cho backend và giao diện.
- * Nguồn: Blueprint website renco.vn (mục 3, 9, 14).
+ * Nguồn: bản yêu cầu website v0.1 (mục 3, 9, 14).
  */
 
 export const LOCALES = ['vi', 'en'] as const

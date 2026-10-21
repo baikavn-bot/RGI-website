@@ -1,4 +1,4 @@
-# Sổ tay vận hành renco.vn
+# Sổ tay vận hành renvindo.com
 
 Người giữ: Quản trị kỹ thuật RGI. Mọi thao tác trên production ghi phiếu WEB- theo QT-08.
 
@@ -7,7 +7,7 @@ Người giữ: Quản trị kỹ thuật RGI. Mọi thao tác trên production 
 1. Máy chủ ảo tại Việt Nam, Ubuntu 24.04, 2 vCPU, 4 GB RAM, 80 GB SSD [ĐX]. **Bật swap ≥ 4 GB** trước khi build: bước `pnpm build` trong Docker dùng hơn 2 GB RAM; máy 3,6 GB không swap đã bị hệ điều hành giết tiến trình build (và cả tiến trình hệ thống) khi thử trên VPS test 20/10/2026. Kiểm: `free -h` có dòng `Swap:` khác 0.
 2. Chỉ dùng khoá SSH; tắt đăng nhập root và mật khẩu; tường lửa chỉ mở 22 (giới hạn IP), 80, 443.
 3. Cài Docker Engine + Docker Compose plugin, `gpg`, `rclone`.
-4. DNS: bản ghi A `renco.vn`, `www.renco.vn` trỏ về máy chủ; SPF, DKIM, DMARC theo nhà cung cấp email.
+4. DNS: bản ghi A `renvindo.com`, `www.renvindo.com` trỏ về máy chủ; SPF, DKIM, DMARC theo nhà cung cấp email.
 5. Kho mã đứng tên RGI. Clone vào `/opt/renco-web`. Docker đặt tên ổ dữ liệu theo tên thư mục (vd. `renco-web_pgdata`, `renco-web_uploads`); `scripts/backup.sh` tự tìm đúng ổ, nhưng **đừng đổi tên thư mục sau khi đã chạy** — đổi là Docker tạo ổ mới, trống.
 6. Sao lưu: nhập khoá **công khai** GPG của người giữ bản sao lưu (`gpg --import khoa-cong-khai.asc`), cấu hình remote rclone tới nơi lưu ở nhà cung cấp khác. Khoá **riêng** GPG không bao giờ để trên máy chủ. Thêm vào `.env`: `BACKUP_GPG_RECIPIENT`, `BACKUP_REMOTE` (xem đầu `scripts/backup.sh`).
 
@@ -22,7 +22,7 @@ docker compose up -d --build
 docker compose logs -f web      # chờ "Migrated" và "Ready"
 ```
 
-Mở `https://renco.vn/admin`, tạo tài khoản đầu tiên. **Ô «Vai trò» mặc định là Sales — đổi thành «Giám đốc»** trước khi bấm Tạo; quên đổi thì tài khoản này không tạo được người dùng khác và phải sửa thẳng trong cơ sở dữ liệu. Quét mã xác thực hai lớp. Giám đốc tạo các tài khoản còn lại (mỗi người một tài khoản).
+Mở `https://renvindo.com/admin`, tạo tài khoản đầu tiên. **Ô «Vai trò» mặc định là Sales — đổi thành «Giám đốc»** trước khi bấm Tạo; quên đổi thì tài khoản này không tạo được người dùng khác và phải sửa thẳng trong cơ sở dữ liệu. Quét mã xác thực hai lớp. Giám đốc tạo các tài khoản còn lại (mỗi người một tài khoản).
 
 Ngay sau đó, nhập **Cài đặt website** (tên doanh nghiệp, mã số thuế, địa chỉ, hotline, email). Chưa nhập thì website ẩn mọi nút gọi, chân trang để trống.
 
@@ -43,7 +43,7 @@ docker tag renco-web:latest renco-web:prev-$(date +%Y%m%d-%H%M) # 2. giữ ảnh
 git fetch && git checkout <tag hoặc mã commit đã gộp vào main>  # 3. lấy mã mới
 docker compose build web                                       # 4. build ảnh mới (ghi đè renco-web:latest)
 docker compose up -d web                                       # 5. chạy ảnh mới; migration mới (nếu có) tự chạy
-curl -fsS https://renco.vn/api/health                          # 6. phải trả {"ok":true,"db":"ok"}
+curl -fsS https://renvindo.com/api/health                          # 6. phải trả {"ok":true,"db":"ok"}
 ```
 
 Giữ 3 ảnh `prev-` gần nhất (`docker images renco-web`), xoá ảnh cũ hơn bằng `docker rmi renco-web:prev-…`. Repo chưa có tag phiên bản: dùng mã commit của lần gộp PR trên `main`.
@@ -56,7 +56,7 @@ Nếu bản mới lỗi và **chưa** có migration mới:
 docker images renco-web                                   # xem các bản prev- đang giữ
 docker tag renco-web:prev-YYYYMMDD-HHMM renco-web:latest  # bản tạo ở bước 2 mục 3 của lần cập nhật hỏng
 docker compose up -d web
-curl -fsS https://renco.vn/api/health
+curl -fsS https://renvindo.com/api/health
 ```
 
 Nếu đã chạy migration mới: dừng web, khôi phục cơ sở dữ liệu từ bản sao lưu trước cập nhật (mục 6), rồi chạy ảnh cũ.
@@ -84,7 +84,7 @@ docker compose exec -T db sh -c 'pg_restore -U "$POSTGRES_USER" -d "$POSTGRES_DB
 UPLOADS_VOLUME=$(docker inspect -f '{{range .Mounts}}{{if eq .Destination "/data/uploads"}}{{.Name}}{{end}}{{end}}' "$(docker compose ps -a -q web)")
 docker run --rm -i -v "$UPLOADS_VOLUME":/data alpine tar xzf - -C /data < uploads.tgz
 docker compose up -d                          # bật lại toàn bộ
-curl -fsS https://renco.vn/api/health
+curl -fsS https://renvindo.com/api/health
 rm db.dump uploads.tgz                        # 2 tệp này chưa mã hoá, chứa dữ liệu khách
 ```
 
@@ -92,7 +92,7 @@ Ghi thời gian khôi phục thực tế vào phiếu. Mục tiêu ≤ 4 giờ, 
 
 ## 7. Giám sát
 
-- Kiểm tra `https://renco.vn/api/health` mỗi 5 phút (UptimeRobot, Uptime Kuma hoặc tương đương).
+- Kiểm tra `https://renvindo.com/api/health` mỗi 5 phút (UptimeRobot, Uptime Kuma hoặc tương đương).
 - Cảnh báo CPU, RAM, ổ đĩa > 80%.
 - `docker compose logs --since 1h web | grep -i error` khi có báo lỗi.
 
@@ -120,7 +120,7 @@ Tạm dừng khi bảo trì: `DISABLE_JOBS=true` rồi `docker compose up -d web
 
 ## 10. Chạy sau nginx có sẵn (máy chủ dùng chung, ví dụ aaPanel)
 
-Dùng khi máy chủ đã có nginx giữ cổng 80/443 cho các website khác (VPS test dùng chung). **Máy chủ production riêng cho renco.vn dùng cách chuẩn với Caddy ở mục 2**, không dùng mục này.
+Dùng khi máy chủ đã có nginx giữ cổng 80/443 cho các website khác (VPS test dùng chung). **Máy chủ production riêng cho renvindo.com dùng cách chuẩn với Caddy ở mục 2**, không dùng mục này.
 
 Khác cách chuẩn: không chạy Caddy; web mở ở `127.0.0.1:3100`; nginx của máy chủ lo HTTPS và chuyển tiếp vào. Lớp chặn `/admin` theo IP (`ADMIN_ALLOW_IPS`) nằm ở Caddy nên **không có hiệu lực** — trang quản trị chỉ còn mật khẩu, 2FA và khoá tài khoản.
 
