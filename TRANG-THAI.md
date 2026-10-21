@@ -10,7 +10,7 @@ MVP v0.1 website renvindo.com đã có mã đầy đủ trên GitHub (16/10/2026
 
 **`main` đã khoá** (ruleset `bao-ve-main`): chỉ gộp qua PR, job CI `check` phải xanh, cấm xoá nhánh và ghi đè lịch sử [xác minh 20/10 — API GitHub].
 
-**Giao diện sẽ dựng lại theo bộ 2 «Web v2»** (Figma page 31 – 32, Thắng chốt 20/10). Bộ 1 (page 29 – 30) chỉ còn là nền token và component. Giao diện đang có trong mã gần với bộ 1, khác hẳn bộ 2 [xác minh 20/10 — chụp màn 1440/375 so với Figma].
+**Giao diện: giữ bộ 1 (v1) đang có trong mã để ra mắt** (Thắng chốt 21/10, thay quyết định 20/10). **Không dựng bộ 2 «Web v2»** (page 31 – 32 chỉ còn để tham khảo). Thắng sẽ làm **UI-v3** sau ra mắt. Việc trước mắt: trỏ `renvindo.com` về VPS test (mục 4).
 
 ## 2. Đã xong
 
@@ -18,7 +18,7 @@ MVP v0.1 website renvindo.com đã có mã đầy đủ trên GitHub (16/10/2026
 | --- | --- | --- |
 | Mã MVP v0.1 lên `main` (3 commit, danh tính BAIKA) | 16/10 | [xác minh 18/10 — git log] |
 | Kiểm toán ban đầu chỉ đọc (báo cáo `docs/08-handoff/AUDIT.md`, chỉ trên máy) | 18/10 | [xác minh 18/10] |
-| Chốt Figma «RENCO — Copy» page 28 – 32 làm nguồn chân lý giao diện; chốt dựng theo bộ 2 | 20/10 | Thắng chốt. [xác minh 20/10 — đọc được cả 5 page, bảng ở `CLAUDE.md` mục 3] |
+| Chốt Figma «RENCO — Copy» page 28 – 32 làm nguồn chân lý giao diện; chốt dựng theo bộ 2 (**21/10 đổi: giữ v1, bỏ bộ 2** — mục 1) | 20/10 | Thắng chốt. [xác minh 20/10 — đọc được cả 5 page, bảng ở `CLAUDE.md` mục 3] |
 | PR #1: bộ luật Claude Code (`CLAUDE.md`, `.claude/settings.json`, file này), README + HANDOVER bỏ chữ «Blueprint» | 20/10 | Đã gộp [xác minh 20/10 — GitHub] |
 | Chạy thử trên máy: PostgreSQL bằng Docker, `pnpm dev`, `pnpm seed`; mọi trang chính trả 200 | 20/10 | [xác minh 20/10] |
 | PR #2: ghi rõ pnpm 10.34.7; tách `pnpm audit` thành job riêng | 20/10 | Đã gộp. CI lần đầu chạy được: `check`, `e2e` xanh; `audit` đỏ (chờ bản vá) [xác minh 20/10 — GitHub] |
@@ -39,7 +39,7 @@ MVP v0.1 website renvindo.com đã có mã đầy đủ trên GitHub (16/10/2026
 | 1 | Lỗ hổng `braces` (GHSA-vfj7-8cjw-p6xm, qua `@payloadcms/next › sass › chokidar`) mức cao, **chưa có bản vá** | 🟡 | Thắng chốt: **không bỏ qua**, để job `audit` đỏ, theo dõi tới khi có bản vá. Mỗi phiên kiểm: `npx -y pnpm@10.34.7 audit --prod --audit-level=high` [xác minh 20/10] |
 | 2 | Sao lưu, quay lui, khôi phục | 🟢 | **Đã diễn tập thật trên VPS test 21/10** (xem mục 2). Còn: chọn nơi lưu thật ở nhà cung cấp khác (rclone) và chỗ giữ khoá riêng GPG trước production; chưa diễn tập quay lui ảnh `prev-`. PR #6 (đã gộp): `backup.sh` tự tìm ổ tệp của container web, dừng và báo `BACKUP LOI` khi dump rỗng / ổ tệp rỗng / mã hoá hoặc đẩy đi lỗi, luôn xoá bản chưa mã hoá; RUNBOOK gắn nhãn `prev` **trước** khi build, khôi phục dùng được cho máy chủ mới. Đã diễn tập trên máy với dự án Docker rút gọn (cùng tên dịch vụ, ổ, đường dẫn): sao lưu → khôi phục sang dự án khác, dữ liệu và tệp nguyên vẹn; 3 ca hỏng đều bị chặn [xác minh 20/10] |
 | 3 | Form tạo tài khoản đầu tiên (`/admin` trên database mới) để ô **Vai trò mặc định là Sales**. Quên đổi sang Giám đốc thì tài khoản đầu tiên không tạo được người dùng khác, phải sửa thẳng trong database | 🟡 | Chọn «Giám đốc» thì lưu đúng [xác minh 20/10]. Đã ghi cảnh báo vào RUNBOOK mục 2 (PR #6); cân nhắc đổi mặc định khi chưa có người dùng nào |
-| 3b | Trang chủ trên database trống còn khối trống (ảnh hero, khối Nhà máy), số «750 tấn» viết cứng trong mã, chân trang hiện nhãn «Mã số doanh nghiệp:», «Trụ sở:», «Email:» không có giá trị | 🟢 | Không sập; xử lý khi dựng bộ 2 [xác minh 20/10 — chụp màn bản production] |
+| 3b | Trang chủ trên database trống còn khối trống (ảnh hero, khối Nhà máy), số «750 tấn» viết cứng trong mã, chân trang hiện nhãn «Mã số doanh nghiệp:», «Trụ sở:», «Email:» không có giá trị | 🟡 | Không sập [xác minh 20/10 — chụp màn bản production]. Giữ v1 nên **phải xử lý trước ra mắt**: khối trống, nhãn trống hết khi RGI nhập đủ nội dung + Cài đặt [suy luận]; «750 tấn» có nguồn (hồ sơ năng lực PT Dunia Plast 2026, `src/lib/constants.ts`) — chuyển vào CMS hay giữ: hỏi Thắng |
 | 4 | `ADMIN_ALLOW_IPS` mặc định mở mọi IP; chặn IP không phủ `/api/users/login` | 🟡 | Chưa sửa [xác minh 18/10]. Thử Caddy thật 21/10: máy ngoài danh sách bị chặn `/admin` (403) nhưng vẫn gọi được `POST /api/users/login` (401 khi sai mật khẩu) và `/api/users/me` (200) [xác minh 21/10] |
 | 5 | Seed chỉ chặn khi `NODE_ENV=production` | 🟡 | Chưa sửa [xác minh 18/10] |
 | 6 | Chế độ dev lưu cache dữ liệu trên ổ đĩa (`.next/dev/cache/fetch-cache`), khởi động lại không xoá. Đổi database hoặc seed lại thì trang vẫn hiện dữ liệu cũ (từng gây lỗi 500 giả và 404 giả) | 🟢 | Cách xử lý: dừng dev, xoá thư mục `.next/dev/cache/fetch-cache`, bật lại dev [xác minh 20/10] |
@@ -50,13 +50,27 @@ MVP v0.1 website renvindo.com đã có mã đầy đủ trên GitHub (16/10/2026
 
 Chi tiết, cách sửa: `docs/08-handoff/AUDIT.md` mục 5 (chỉ trên máy).
 
-## 4. Tiếp theo (Thắng duyệt thứ tự 20/10)
+## 4. Tiếp theo — ra mắt `renvindo.com` trên VPS test với giao diện v1 (Thắng chốt 21/10)
 
-1. ~~Thắng sửa Cài đặt website trên VPS test (hotline, email, email nhận thông báo lead).~~ Xong 21/10.
-2. ~~Thử `deploy/Caddyfile` trên máy (VPS test không thử được).~~ Xong 21/10 (mục 2).
-3. Dựng giao diện bộ 2 «Web v2» (cập nhật VPS test theo RUNBOOK mục 3 sau mỗi lần gộp để xem trước).
-4. **Để sau (Thắng giao 21/10, nhắc lại khi xong việc quan trọng):** cập nhật giao diện trang quản trị (CMS) cho RENCO; tạo lại mã QR trong Figma.
-5. Trước khi trỏ `renvindo.com` về VPS test: dữ liệu thật (không seed), trang pháp lý đã duyệt, khoá Turnstile, SMTP Gmail, `SITE_ENV=production` + build lại, chặn `/admin` theo IP trong nginx, sao lưu ra nơi lưu khác; build ảnh ở nơi khác thay vì trên máy chủ nhỏ (đề xuất GitHub Actions); diễn tập quay lui.
+Xong trước đó: Cài đặt VPS test (21/10), thử Caddyfile (21/10). Bỏ: dựng bộ 2.
+
+Hiện trạng DNS `renvindo.com`: chưa có bản ghi A cho cả `renvindo.com` lẫn `www` [xác minh 21/10 — nslookup qua 8.8.8.8].
+
+| # | Việc | Ai | Chặn ra mắt? |
+| --- | --- | --- | --- |
+| 1 | Chọn cách lấy database sạch: **bản mới song song** trên cùng VPS (thư mục riêng, cổng riêng `WEB_LOCAL_PORT`, ổ dữ liệu riêng), giữ bản thử hiện tại; hay xoá dữ liệu mẫu của bản hiện tại | Thắng quyết | Có — bản hiện tại chứa sản phẩm mẫu và 7 tài khoản mẫu |
+| 2 | Khoá Turnstile (Cloudflare, chống spam form) đứng tên công ty. Thiếu khoá thì production **từ chối mọi form** | Thắng / RGI tạo tài khoản; Tèo hướng dẫn | Có |
+| 3 | Mật khẩu ứng dụng Gmail công ty cho SMTP (RUNBOOK mục 2) | Thắng / RGI; dán thẳng vào `.env` trên VPS | Có — không có thì sales không nhận thông báo lead |
+| 4 | Nơi lưu sao lưu ở nhà cung cấp khác (rclone) + khoá GPG thật, khoá riêng giữ ngoài VPS. Có lead thật = có dữ liệu cá nhân của khách | Thắng chọn nơi lưu; Tèo soạn lệnh | Có |
+| 5 | Nội dung thật: sản phẩm, trang, ảnh, Cài đặt (MST, trụ sở…) do RGI nhập trên bản thật | RGI | Có — trang chưa có nội dung trả 404 |
+| 6 | Trang pháp lý (chính sách bảo mật, điều khoản) Pháp chế RGI duyệt | RGI | Có |
+| 7 | Build lại với `NEXT_PUBLIC_SITE_URL=https://renvindo.com`, `SITE_ENV=production` (robots mở cho Google) | Tèo soạn lệnh, Thắng chạy | Có |
+| 8 | DNS ZoneDNS: bản ghi A `renvindo.com` + `www` → IP VPS; aaPanel thêm site, reverse proxy, SSL Let's Encrypt, `www` chuyển về không `www` | Thắng (Tèo hướng dẫn từng bước) | Có |
+| 9 | Chặn `/admin` theo IP văn phòng trong nginx aaPanel (cần IP văn phòng RGI); không có thì chỉ còn mật khẩu + 2FA | Thắng quyết có/không | Không bắt buộc |
+| 10 | Diễn tập quay lui ảnh `prev-` | Tèo soạn, Thắng chạy | Nên làm |
+| 11 | «750 tấn» viết cứng (mục 3 #3b) | Thắng quyết | Không |
+
+**Để sau ra mắt (Thắng giao 21/10, nhắc lại khi xong việc quan trọng):** UI-v3 (Thắng làm thiết kế); giao diện trang quản trị (CMS) cho RENCO; chữ cạnh mã QR trong Figma hứa đích khác trang chủ (danh sách ở `docs/08-handoff/03-viec-dang-do-va-cau-hoi.md`).
 
 ## 5. Việc RGI phải làm trước ra mắt
 
