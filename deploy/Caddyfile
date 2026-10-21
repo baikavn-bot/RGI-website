@@ -2,6 +2,8 @@
 # ADMIN_ALLOW_IPS: danh sách IP văn phòng được vào trang quản trị (lớp bảo vệ thứ hai, mục 18).
 # Ghi cả IPv4 và IPv6 của văn phòng: 0.0.0.0/0 chỉ khớp IPv4, máy vào bằng IPv6 sẽ bị chặn.
 # Nếu dùng Cloudflare Access thay danh sách IP, để ADMIN_ALLOW_IPS="0.0.0.0/0 ::/0" và cấu hình Access cho /admin.
+# Các IP ngăn cách bằng DẤU CÁCH. Ghi dấu phẩy thì Caddy không khởi động được → cả website sập (đã thử 21/10/2026).
+# Chỉ chặn /admin; /api/* (kể cả /api/users/login) vẫn mở — xem TRANG-THAI.md mục 3 #4.
 
 {$SITE_DOMAIN} {
 	encode zstd gzip
@@ -19,7 +21,8 @@
 	}
 
 	@static path /_next/static/*
-	header @static Cache-Control "public, max-age=31536000, immutable"
+	# Dấu > = đặt sau khi web trả về, thay header của web; không có thì trình duyệt nhận 2 dòng Cache-Control
+	header @static >Cache-Control "public, max-age=31536000, immutable"
 
 	reverse_proxy web:3000 {
 		header_up X-Real-IP {remote_host}
