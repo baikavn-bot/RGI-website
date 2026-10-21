@@ -4,7 +4,7 @@ Người giữ: Quản trị kỹ thuật RGI. Mọi thao tác trên production 
 
 ## 1. Chuẩn bị máy chủ (một lần)
 
-1. Máy chủ ảo tại Việt Nam, Ubuntu 24.04, 2 vCPU, 4 GB RAM, 80 GB SSD [ĐX].
+1. Máy chủ ảo tại Việt Nam, Ubuntu 24.04, 2 vCPU, 4 GB RAM, 80 GB SSD [ĐX]. **Bật swap ≥ 4 GB** trước khi build: bước `pnpm build` trong Docker dùng hơn 2 GB RAM; máy 3,6 GB không swap đã bị hệ điều hành giết tiến trình build (và cả tiến trình hệ thống) khi thử trên VPS test 20/10/2026. Kiểm: `free -h` có dòng `Swap:` khác 0.
 2. Chỉ dùng khoá SSH; tắt đăng nhập root và mật khẩu; tường lửa chỉ mở 22 (giới hạn IP), 80, 443.
 3. Cài Docker Engine + Docker Compose plugin, `gpg`, `rclone`.
 4. DNS: bản ghi A `renco.vn`, `www.renco.vn` trỏ về máy chủ; SPF, DKIM, DMARC theo nhà cung cấp email.
@@ -27,6 +27,10 @@ Mở `https://renco.vn/admin`, tạo tài khoản đầu tiên. **Ô «Vai trò�
 Ngay sau đó, nhập **Cài đặt website** (tên doanh nghiệp, mã số thuế, địa chỉ, hotline, email). Chưa nhập thì website ẩn mọi nút gọi, chân trang để trống.
 
 Chạy thử sao lưu một lần (`./scripts/backup.sh`), kiểm log có dòng `backup ok`, rồi mới cài cron (mục 5).
+
+**Bẫy khi điền `.env`:** các biến số (`FORM_RATE_LIMIT`, `LEAD_RETENTION_MONTHS`) nếu **có mặt mà để trống** sẽ bị hiểu là 0 — mọi form bị chặn «gửi quá nhiều lần», lead bị ẩn danh hoá ngay lần chạy tác vụ đầu. Luôn tạo `.env` bằng cách chép `.env.example` (đã có giá trị mặc định) rồi sửa, không viết `.env` từ đầu.
+
+**Kiểm trang bằng `curl`:** luôn kèm giới hạn chờ, ví dụ `curl -m 30 …`. Không có `-m` thì web treo là lệnh chờ mãi.
 
 Không chạy `pnpm seed` trên production.
 
@@ -141,3 +145,23 @@ Khác cách chuẩn: không chạy Caddy; web mở ở `127.0.0.1:3100`; nginx c
 
    Thiếu `X-Real-IP` thì mọi khách bị coi là cùng một IP: giới hạn 5 lần gửi form / 10 phút áp cho **cả website**. Thiếu `client_max_body_size` thì tải ảnh lớn trong trang quản trị báo lỗi 413.
 4. Chỉ sửa cấu hình của **đúng site này** trong aaPanel; không sửa cấu hình nginx chung — các website khác trên máy chủ dùng chung nó.
+
+## 11. Nạp dữ liệu mẫu trên máy chủ THỬ (không bao giờ trên production)
+
+Ảnh production (`renco-web:latest`) không có lệnh seed. Trên máy chủ thử, dùng một container tạm build từ tầng `builder` của `Dockerfile`:
+
+```bash
+cd /opt/renco-web
+docker build --target builder -t renco-web:builder --build-arg NEXT_PUBLIC_SITE_URL="$(grep '^NEXT_PUBLIC_SITE_URL=' .env | cut -d= -f2)" .
+: > .seed-credentials && chmod 600 .seed-credentials
+NET=$(docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' "$(docker compose ps -q db)")
+VOL=$(docker inspect -f '{{range .Mounts}}{{if eq .Destination "/data/uploads"}}{{.Name}}{{end}}{{end}}' "$(docker compose ps -q web)")
+( set -a; . ./.env; set +a; docker run --rm --network "$NET" -v "$VOL":/data/uploads -v "$PWD/.seed-credentials":/app/.seed-credentials \
+  -e NODE_ENV=production -e ALLOW_SEED=true -e DISABLE_JOBS=true -e UPLOAD_DIR=/data/uploads \
+  -e DATABASE_URL="postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB" -e PAYLOAD_SECRET="$PAYLOAD_SECRET" \
+  -e NEXT_PUBLIC_SITE_URL="$NEXT_PUBLIC_SITE_URL" renco-web:builder sh -c 'corepack enable pnpm >/dev/null 2>&1; pnpm seed' )
+docker compose up -d --force-recreate web    # bỏ bộ nhớ đệm cũ để hiện ngay dữ liệu mới
+```
+
+- **Bắt buộc `NODE_ENV=production`.** Thiếu biến này, Payload chạy chế độ dev: tự sửa cấu trúc bảng và để lại dấu «dev mode». Lần khởi động sau, web production **dừng chờ câu hỏi xác nhận** và treo (`unhealthy`) — đã gặp trên VPS test 20/10/2026. Cách gỡ: xoá database, cho web chạy migration lại, seed lại đúng lệnh trên.
+- Mật khẩu 7 tài khoản mẫu ghi vào `.seed-credentials` (chỉ root đọc). Seed **xoá** sản phẩm, trang, ảnh hiện có — chỉ dùng trên máy chủ thử chứa dữ liệu mẫu.
