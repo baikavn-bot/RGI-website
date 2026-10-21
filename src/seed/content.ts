@@ -18,8 +18,8 @@ export const SETTINGS = {
     en: 'F9, Diamond Plaza, 34 Le Duan Street, Sai Gon Ward, Ho Chi Minh City',
   },
   representative: 'Nguyễn Thị Xuân Mai — Giám đốc',
-  hotline: '0948 438 218',
-  email: 'sales@renvindo.com',
+  hotline: '0948 391 202',
+  email: 'greenplast.renco689@gmail.com',
   // [CẦN XÁC NHẬN] cam kết thời gian phản hồi — để trống tới khi Giám đốc chốt
   responseTime: { vi: '', en: '' },
   consentText: {

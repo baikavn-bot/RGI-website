@@ -10,7 +10,7 @@ describe('T08 · chuẩn hoá số điện thoại', () => {
     ['0912345678', '+84912345678'],
     ['+84912345678', '+84912345678'],
     ['84 912 345 678', '+84912345678'],
-    ['0948 438 218', '+84948438218'],
+    ['0948 391 202', '+84948391202'],
     ['028 3822 1234', '+842838221234'],
   ])('%s → %s', (raw, expected) => {
     expect(normalizePhone(raw)).toBe(expected)
@@ -21,7 +21,7 @@ describe('T08 · chuẩn hoá số điện thoại', () => {
     expect(normalizePhone('abc')).toBeNull()
   })
   it('hiển thị kiểu Việt Nam', () => {
-    expect(formatPhoneVN('+84948438218')).toBe('0948 438 218')
+    expect(formatPhoneVN('+84948391202')).toBe('0948 391 202')
   })
   it('chưa có hotline (database mới) thì trả rỗng, không làm sập trang', () => {
     expect(formatPhoneVN(undefined)).toBe('')

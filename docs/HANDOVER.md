@@ -123,7 +123,7 @@ Lưu ý thêm: sửa chữ trong quy cách (cỡ, ghi chú) không qua bước P
 
 **Việc chuẩn bị:**
 
-1. Tên miền chính thức: `renvindo.com` (RGI đã có, 21/10/2026; DNS ở ZoneDNS). Tạo hộp thư `sales@renvindo.com`, `no-reply@renvindo.com`; cấu hình SPF, DKIM, DMARC cho `renvindo.com`. **Không dùng `renco.vn`** (tên miền cũ trong bản yêu cầu v0.1): đã thuộc người khác — link, email trỏ về đó sẽ tới tay người lạ.
+1. Tên miền chính thức: `renvindo.com` (RGI đã có, 21/10/2026; DNS ở ZoneDNS). **Email công ty: `greenplast.renco689@gmail.com`** (Thắng chốt 21/10/2026) — hiện trên website (nhập ở Cài đặt website), nhận thông báo lead, và là địa chỉ gửi email đi qua SMTP Gmail (RUNBOOK mục 2). Hộp thư theo tên miền `@renvindo.com` chưa có; nếu tạo sau thì cấu hình SPF, DKIM, DMARC. **Không dùng `renco.vn`** (tên miền cũ trong bản yêu cầu v0.1): đã thuộc người khác — link, email trỏ về đó sẽ tới tay người lạ.
 2. Thuê máy chủ ảo tại Việt Nam; tạo tài khoản Cloudflare Turnstile.
 3. Pháp chế dán WB01, WB02 vào trang pháp lý; chốt câu đồng ý và thời hạn giữ lead.
 4. Giao bảng dữ liệu sản phẩm chuẩn (mã, tên Việt – Anh, cỡ, số liệu đã nhà máy xác nhận).
