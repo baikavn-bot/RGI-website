@@ -162,6 +162,8 @@ Khác cách chuẩn: không chạy Caddy; web mở ở `127.0.0.1:3100`; nginx c
    Thiếu `X-Real-IP` thì mọi khách bị coi là cùng một IP: giới hạn 5 lần gửi form / 10 phút áp cho **cả website**. Thiếu `client_max_body_size` thì tải ảnh lớn trong trang quản trị báo lỗi 413.
 4. Chỉ sửa cấu hình của **đúng site này** trong aaPanel; không sửa cấu hình nginx chung — các website khác trên máy chủ dùng chung nó.
 
+**Hai bản trên cùng máy chủ (bản thật + bản thử, VPS test 22/10/2026):** mỗi bản một thư mục riêng (Docker đặt tên container, ổ dữ liệu theo tên thư mục nên không lẫn nhau), một `WEB_LOCAL_PORT` riêng, và **tên ảnh riêng**: thêm `WEB_IMAGE=renco-web-thu` vào `.env` của bản thử; bản thật để trống (mặc định `renco-web`). Thiếu dòng này thì build bản này ghi đè ảnh `renco-web:latest` của bản kia — lần khởi động lại sau, bản kia chạy nhầm ảnh (sai địa chỉ website, đăng nhập `/admin` hỏng). Các lệnh `docker tag renco-web:…` ở mục 3, 4 dùng cho bản thật; với bản thử đổi thành `renco-web-thu:…`. Seed (mục 11) chỉ chạy trong thư mục bản thử.
+
 ## 11. Nạp dữ liệu mẫu trên máy chủ THỬ (không bao giờ trên production)
 
 Ảnh production (`renco-web:latest`) không có lệnh seed. Trên máy chủ thử, dùng một container tạm build từ tầng `builder` của `Dockerfile`:

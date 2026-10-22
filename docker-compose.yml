@@ -11,7 +11,9 @@ services:
         NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
         NEXT_PUBLIC_UMAMI_SRC: ${NEXT_PUBLIC_UMAMI_SRC:-}
         NEXT_PUBLIC_UMAMI_ID: ${NEXT_PUBLIC_UMAMI_ID:-}
-    image: renco-web:latest
+    # Hai bản chạy chung một máy (bản thật + bản thử) phải khác tên ảnh, nếu không build bản này ghi đè ảnh của bản kia.
+    # Bản thật để mặc định renco-web; bản thử đặt WEB_IMAGE=renco-web-thu trong .env của nó (RUNBOOK mục 10).
+    image: ${WEB_IMAGE:-renco-web}:latest
     restart: unless-stopped
     env_file: .env
     environment:
