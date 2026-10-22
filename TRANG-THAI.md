@@ -58,7 +58,7 @@ Xong trước đó: Cài đặt VPS test (21/10), thử Caddyfile (21/10). Bỏ:
 
 **22/10: `renvindo.com` đã chạy trên VPS test với dữ liệu mẫu** (mục 2) — việc 7 (phần địa chỉ) và 8 đã xong. Các việc còn lại dưới đây giờ là điều kiện để **thay dữ liệu mẫu bằng website thật** (mở form, mở Google).
 
-Còn hở sau khi trỏ tên miền [xác minh 22/10]: `www.renvindo.com` trả 200 thay vì chuyển về `renvindo.com` (canonical đã đúng nên không hại tìm kiếm); `thegioiphang.online` vẫn hiện cùng website nhưng `/admin` ở đó không đăng nhập được nữa — nên chuyển hướng sang `renvindo.com`; bước tải pnpm trong `Dockerfile` chạy 2 lần (lỗi npm 503 dễ làm hỏng build) — đề xuất sửa.
+Đã vá 22/10 các chỗ hở sau khi trỏ tên miền: (1) aaPanel → Redirect: 3 quy tắc 301 giữ đường dẫn, `www.renvindo.com`, `thegioiphang.online`, `www.thegioiphang.online` → `https://renvindo.com` [xác minh 22/10 — `www.renvindo.com/san-pham` → `renvindo.com/san-pham`, `thegioiphang.online/admin` → `renvindo.com/admin`, giữ cả `?x=1`; `renvindo.com` vẫn 200]; (2) `Dockerfile` tải pnpm một lần, tự thử lại khi kho npm lỗi (có hiệu lực từ lần cập nhật VPS sau). **Nhắc ~20/12/2026:** kiểm aaPanel tự gia hạn SSL được không — aaPanel cảnh báo chuyển hướng có thể làm hỏng xác minh bằng file (chứng chỉ hết hạn 20/01/2027).
 
 | # | Việc | Ai | Chặn ra mắt? |
 | --- | --- | --- | --- |
@@ -69,7 +69,7 @@ Còn hở sau khi trỏ tên miền [xác minh 22/10]: `www.renvindo.com` trả 
 | 5 | Nội dung thật: sản phẩm, trang, ảnh, Cài đặt (MST, trụ sở…) do RGI nhập trên bản thật | RGI | Có — trang chưa có nội dung trả 404 |
 | 6 | Trang pháp lý (chính sách bảo mật, điều khoản) Pháp chế RGI duyệt | RGI | Có |
 | 7 | ~~Build lại với `NEXT_PUBLIC_SITE_URL=https://renvindo.com`~~ (xong 22/10); còn `SITE_ENV=production` (robots mở cho Google) — chỉ bật khi đã có dữ liệu thật | Tèo soạn lệnh, Thắng chạy | Có |
-| 8 | ~~DNS + aaPanel + SSL~~ (xong 22/10); còn `www` chuyển về không `www`, `thegioiphang.online` chuyển sang `renvindo.com` | Thắng (Tèo hướng dẫn) | Không |
+| 8 | ~~DNS + aaPanel + SSL + chuyển hướng `www` và tên miền thử~~ (xong 22/10) | Thắng (Tèo hướng dẫn) | — |
 | 9 | Chặn `/admin` theo IP văn phòng trong nginx aaPanel (cần IP văn phòng RGI); không có thì chỉ còn mật khẩu + 2FA | Thắng quyết có/không | Không bắt buộc |
 | 10 | Diễn tập quay lui ảnh `prev-` | Tèo soạn, Thắng chạy | Nên làm |
 | 11 | «750 tấn» viết cứng (mục 3 #3b) | Thắng quyết | Không |

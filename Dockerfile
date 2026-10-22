@@ -6,11 +6,20 @@ RUN apk add --no-cache libc6-compat
 ENV NEXT_TELEMETRY_DISABLED=1
 WORKDIR /app
 
-FROM base AS deps
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN corepack enable pnpm && pnpm install --frozen-lockfile
+# Tải pnpm MỘT lần, lưu trong tầng này; deps và builder dùng lại, không tải lại mỗi lần build.
+# Kho npm thỉnh thoảng trả 503 (VPS test 22/10/2026) → thử lại 1 lần sau 15 giây.
+# PNPM_VERSION phải khớp trường "packageManager" trong package.json.
+FROM base AS pnpm
+ARG PNPM_VERSION=10.34.7
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+RUN corepack enable pnpm \
+    && (corepack install -g pnpm@$PNPM_VERSION || (sleep 15 && corepack install -g pnpm@$PNPM_VERSION))
 
-FROM base AS builder
+FROM pnpm AS deps
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
+
+FROM pnpm AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Biến NEXT_PUBLIC_* được nhúng lúc build
@@ -24,7 +33,7 @@ ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_PUBLIC_UMAMI_ID=$NEXT_PUBLIC_UMAMI_ID \
     PAYLOAD_SECRET=build-time-placeholder \
     DATABASE_URL=postgres://build:build@127.0.0.1:1/build
-RUN corepack enable pnpm && pnpm build
+RUN pnpm build
 
 FROM base AS runner
 ENV NODE_ENV=production PORT=3000 HOSTNAME=0.0.0.0 UPLOAD_DIR=/data/uploads
