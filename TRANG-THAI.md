@@ -62,7 +62,7 @@ Xong trước đó: Cài đặt VPS test (21/10), thử Caddyfile (21/10). Bỏ:
 
 | # | Việc | Ai | Chặn ra mắt? |
 | --- | --- | --- | --- |
-| 1 | Chọn cách lấy database sạch: **bản mới song song** trên cùng VPS (thư mục riêng, cổng riêng `WEB_LOCAL_PORT`, ổ dữ liệu riêng), giữ bản thử hiện tại; hay xoá dữ liệu mẫu của bản hiện tại | Thắng quyết | Có — bản hiện tại chứa sản phẩm mẫu và 7 tài khoản mẫu |
+| 1 | ~~Database sạch~~ **Xong 22/10** (Thắng chọn bản song song): bản thật chạy riêng thư mục, cổng, ổ dữ liệu, tên ảnh Docker (PR #19), **không seed**, ở địa chỉ tạm `https://quantri.renvindo.com` để RGI nhập nội dung; `renvindo.com` vẫn hiện bản mẫu. Đã có tài khoản Giám đốc đầu tiên (email Thắng, xác thực 2 lớp). **Ngày ra mắt:** build lại bản thật với `renvindo.com`, đổi trỏ aaPanel, **tắt bản mẫu** (`docker compose stop`, giữ dữ liệu; bật lại ở `thu.renvindo.com` khi cần thử). Khi RGI có Giám đốc riêng: hạ vai Thắng xuống Quản trị kỹ thuật | — | [xác minh 22/10] build đạt; health ok; 3 công tắc an toàn (`TOTP_DISABLED`, `TURNSTILE_OPTIONAL`, `DISABLE_JOBS`) đều `false`; HTTPS chứng chỉ riêng; nginx gửi `X-Real-IP`, giới hạn tải 50 MB; robots chặn; form tạo tài khoản đầu tiên đã đóng (`initialized: true`) |
 | 2 | Khoá Turnstile (Cloudflare, chống spam form) đứng tên công ty. Thiếu khoá thì production **từ chối mọi form** | Thắng / RGI tạo tài khoản; Tèo hướng dẫn | Có |
 | 3 | Mật khẩu ứng dụng Gmail công ty cho SMTP (RUNBOOK mục 2) | Thắng / RGI; dán thẳng vào `.env` trên VPS | Có — không có thì sales không nhận thông báo lead |
 | 4 | Nơi lưu sao lưu ở nhà cung cấp khác (rclone) + khoá GPG thật, khoá riêng giữ ngoài VPS. Có lead thật = có dữ liệu cá nhân của khách | Thắng chọn nơi lưu; Tèo soạn lệnh | Có |
