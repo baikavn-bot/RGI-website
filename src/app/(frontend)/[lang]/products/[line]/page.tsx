@@ -1,16 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
 
 import { Breadcrumb, CtaBand, ProductCard } from '../../../../../components/Catalog'
 import { Icon } from '../../../../../components/Icon'
-import { VariantTable } from '../../../../../components/VariantTable'
-import { getLineBySlug, getLines, getProductsByLine, getSettings, getVariants, img } from '../../../../../lib/data'
+import { getLineBySlug, getLines, getProductsByLine, getSettings, img } from '../../../../../lib/data'
 import { t } from '../../../../../lib/i18n'
 import { href } from '../../../../../lib/routes'
 import { buildMetadata, isLocale } from '../../../../../lib/seo'
-import { columnsFor, toRows } from '../../../../../lib/specs'
 import { formatPhoneVN, normalizePhone } from '../../../../../lib/validators'
 
 type Params = { params: Promise<{ lang: string; line: string }> }
@@ -43,18 +40,14 @@ export default async function LinePage({ params }: Params) {
   const dict = t(lang)
   const vi = lang === 'vi'
   const [products, settings] = await Promise.all([getProductsByLine(line.id, lang), getSettings(lang)])
-  const productOrder = new Map(products.map((p, i) => [p.id, i]))
-  const pid = (v: { product: number | { id: number } }) => (typeof v.product === 'object' ? v.product.id : v.product)
-  // Gom quy cách theo sản phẩm (đúng thứ tự sản phẩm), trong mỗi sản phẩm theo thứ tự quy cách.
-  const variants = (
-    await getVariants(
-      products.map((p) => p.id),
-      lang,
-    )
-  ).sort((a, b) => (productOrder.get(pid(a)) ?? 0) - (productOrder.get(pid(b)) ?? 0) || (a.order ?? 0) - (b.order ?? 0))
-  const columns = columnsFor(line.code)
-  const nameOf = new Map(products.map((p) => [p.id, p.name]))
-  const rows = toRows(variants, columns, (v) => nameOf.get(typeof v.product === 'object' ? v.product.id : v.product))
+  // Gom sản phẩm theo nhóm trong dòng (vd. ống mềm: Dẫn nước, Trong suốt…), giữ thứ tự sản phẩm. Bảng quy cách nằm ở trang từng sản phẩm.
+  const groups: { label: string; items: typeof products }[] = []
+  for (const p of products) {
+    const label = p.groupLabel ?? ''
+    const g = groups.find((x) => x.label === label)
+    if (g) g.items.push(p)
+    else groups.push({ label, items: [p] })
+  }
   const image = img(line.image, 'hero')
   const hotline = formatPhoneVN(normalizePhone(settings.hotline) ?? settings.hotline)
 
@@ -97,11 +90,16 @@ export default async function LinePage({ params }: Params) {
         <div className="wrap">
           <h2>{vi ? 'Sản phẩm trong dòng' : 'Products in this line'}</h2>
           {products.length ? (
-            <div className="grid grid--3" style={{ marginTop: 24 }}>
-              {products.map((p) => (
-                <ProductCard key={p.id} product={p} line={line} locale={lang} dict={dict.common} />
-              ))}
-            </div>
+            groups.map((g) => (
+              <div key={g.label} style={{ marginTop: 32 }}>
+                {g.label ? <h3 style={{ fontSize: '1.15rem', margin: 0 }}>{g.label}</h3> : null}
+                <div className="grid grid--3" style={{ marginTop: 16 }}>
+                  {g.items.map((p) => (
+                    <ProductCard key={p.id} product={p} line={line} locale={lang} dict={dict.common} />
+                  ))}
+                </div>
+              </div>
+            ))
           ) : (
             <div className="empty">
               <p>{dict.common.empty}</p>
@@ -110,17 +108,6 @@ export default async function LinePage({ params }: Params) {
           )}
         </div>
       </section>
-
-      {rows.length ? (
-        <section className="section" aria-labelledby="spec-title">
-          <div className="wrap">
-            <h2 id="spec-title">{dict.common.specs}</h2>
-            <Suspense>
-              <VariantTable rows={rows} columns={columns} dict={dict} locale={lang} showProduct={products.length > 1} filterable caption={`${dict.common.specs} ${line.name}`} />
-            </Suspense>
-          </div>
-        </section>
-      ) : null}
 
       <CtaBand locale={lang} dict={dict} title={vi ? 'Cần báo giá' : 'Need a quote'} accent={vi ? `cho ${line.name}?` : `for ${line.name}?`} text={dict.forms.contractor.lead} hotline={hotline} />
     </>

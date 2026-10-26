@@ -354,7 +354,7 @@ export const PAGES: PageSeed[] = [
         '## RENCO làm gì',
         'RGI nhập khẩu hàng RENCO từ nhà máy và bán cho đối tác tại Việt Nam. Mỗi dòng sản phẩm có mã riêng để đối tác tra cứu và đặt hàng nhanh.',
         '## Vì sao chọn RENCO',
-        '- Một đầu mối cho năm dòng hàng nhựa xây dựng.',
+        '- Một đầu mối cho bốn dòng hàng nhựa xây dựng.',
         '- Hàng từ nhà máy có dây chuyền tái chế nhựa.',
         '- Chính sách riêng cho từng kênh.',
       ],
@@ -373,7 +373,7 @@ export const PAGES: PageSeed[] = [
         '## What RENCO does',
         'RGI imports RENCO products from the factory and sells them to partners in Vietnam. Each product line has its own codes so partners can look up and order quickly.',
         '## Why RENCO',
-        '- One supplier for five plastic building-material lines.',
+        '- One supplier for four plastic building-material lines.',
         '- Products from a factory with its own plastic recycling lines.',
         '- Separate terms for each channel.',
       ],
@@ -425,8 +425,8 @@ export const PAGES: PageSeed[] = [
   {
     key: 'products',
     publish: true,
-    vi: { kicker: 'Sản phẩm', title: 'Năm dòng sản phẩm', titleAccent: 'RENCO', summary: 'Chọn dòng để xem mã, cỡ và tài liệu. Cần báo giá theo công trình, bấm "Nhận báo giá" ở từng trang.' },
-    en: { kicker: 'Products', title: 'Five RENCO', titleAccent: 'product lines', summary: 'Pick a line to see codes, sizes and documents. For a project quote, press "Request a quote" on any page.' },
+    vi: { kicker: 'Sản phẩm', title: 'Bốn dòng sản phẩm', titleAccent: 'RENCO', summary: 'Chọn dòng để xem mã, cỡ và tài liệu. Cần báo giá theo công trình, bấm "Nhận báo giá" ở từng trang.' },
+    en: { kicker: 'Products', title: 'Four RENCO', titleAccent: 'product lines', summary: 'Pick a line to see codes, sizes and documents. For a project quote, press "Request a quote" on any page.' },
   },
   {
     key: 'partners',

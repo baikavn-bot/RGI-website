@@ -1,17 +1,16 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
 
 import { Breadcrumb, ClaimNote, ComplianceBadge, MediaFallback, StatusBadge } from '../../../../../../components/Catalog'
 import { Icon } from '../../../../../../components/Icon'
 import { RichText } from '../../../../../../components/RichText'
-import { VariantTable } from '../../../../../../components/VariantTable'
+import { ProductSpecs } from '../../../../../../components/ProductSpecs'
 import { getAllProducts, getComplianceFor, getLines, getProduct, getVariants, img } from '../../../../../../lib/data'
 import { t } from '../../../../../../lib/i18n'
 import { href, siteUrl } from '../../../../../../lib/routes'
 import { buildMetadata, isLocale } from '../../../../../../lib/seo'
-import { columnsFor, toRows } from '../../../../../../lib/specs'
+import { templateFor } from '../../../../../../lib/specs'
 import type { Document, ProductLine } from '../../../../../../payload-types'
 
 type Params = { params: Promise<{ lang: string; line: string; product: string }> }
@@ -53,8 +52,6 @@ export default async function ProductPage({ params }: Params) {
   const dict = t(lang)
   const vi = lang === 'vi'
   const [variants, compliance] = await Promise.all([getVariants([product.id], lang), getComplianceFor(product.id)])
-  const columns = columnsFor(line.code)
-  const rows = toRows(variants, columns)
   const cover = img(product.cover, 'hero')
   const gallery = ((product.images ?? []) as unknown[]).map((m) => img(m, 'thumb')).filter(Boolean) as NonNullable<ReturnType<typeof img>>[]
   const docs = ((product.documents ?? []) as (Document | number)[]).filter((d): d is Document => typeof d === 'object' && d.visibility === 'public')
@@ -155,13 +152,11 @@ export default async function ProductPage({ params }: Params) {
         </div>
       </section>
 
-      {rows.length ? (
+      {variants.length ? (
         <section className="section section--canvas" aria-labelledby="spec-title" style={{ paddingTop: 56 }}>
           <div className="wrap">
             <h2 id="spec-title">{dict.common.specs}</h2>
-            <Suspense>
-              <VariantTable rows={rows} columns={columns} dict={dict} locale={lang} filterable caption={`${dict.common.specs} ${product.name}`} />
-            </Suspense>
+            <ProductSpecs template={templateFor(product, line.code)} variants={variants} dict={dict} locale={lang} caption={`${dict.common.specs} ${product.name}`} />
           </div>
         </section>
       ) : null}

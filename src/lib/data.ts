@@ -35,10 +35,23 @@ export const getPage = cached(async (key: string, locale: Locale): Promise<Page 
   return res.docs[0] ?? null
 }, 'page')
 
+/** Chỉ dòng có ít nhất một sản phẩm đang hiện trên web (dòng chỉ còn sản phẩm nháp, vd. RC-W, tự ẩn). */
 export const getLines = cached(async (locale: Locale): Promise<ProductLine[]> => {
   const p = await payload()
-  const res = await p.find({ collection: 'product-lines', locale, depth: 1, limit: 20, sort: 'order', overrideAccess: false })
-  return res.docs
+  const [res, products] = await Promise.all([
+    p.find({ collection: 'product-lines', locale, depth: 1, limit: 20, sort: 'order', overrideAccess: false }),
+    p.find({
+      collection: 'products',
+      where: { saleStatus: { in: ['coming_soon', 'on_sale', 'discontinued'] } },
+      depth: 0,
+      limit: 1000,
+      pagination: false,
+      select: { line: true },
+      overrideAccess: false,
+    }),
+  ])
+  const used = new Set(products.docs.map((d) => (typeof d.line === 'object' ? d.line.id : d.line)))
+  return res.docs.filter((l) => used.has(l.id))
 }, 'lines')
 
 export const getLineBySlug = cached(async (slug: string, locale: Locale): Promise<ProductLine | null> => {
