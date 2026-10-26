@@ -1,6 +1,6 @@
 # TRẠNG THÁI DỰ ÁN — đọc file này đầu tiên mỗi phiên
 
-*Cập nhật **22/10/2026** · Ai sửa trạng thái thì sửa ngày ở dòng này. Chỉ sửa qua Pull Request.*
+*Cập nhật **26/10/2026** · Ai sửa trạng thái thì sửa ngày ở dòng này. Chỉ sửa qua Pull Request.*
 
 Ký hiệu: **[xác minh dd/mm]** = đã mở ra kiểm, có ngày · **[suy luận]** = suy ra, chưa kiểm · **[CẦN XÁC NHẬN]** = chờ người trả lời.
 
@@ -74,7 +74,9 @@ Xong trước đó: Cài đặt VPS test (21/10), thử Caddyfile (21/10). Bỏ:
 | 10 | Diễn tập quay lui ảnh `prev-` | Tèo soạn, Thắng chạy | Nên làm |
 | 11 | «750 tấn» viết cứng (mục 3 #3b) | Thắng quyết | Không |
 
-**Để sau ra mắt (Thắng giao 21–22/10, nhắc lại khi xong việc quan trọng):** UI-v3 (Thắng làm thiết kế); giao diện trang quản trị (CMS) cho RENCO; chữ cạnh mã QR trong Figma hứa đích khác trang chủ; giao diện sáng/tối tự đổi theo máy — giữ hay bỏ (danh sách ở `docs/08-handoff/03-viec-dang-do-va-cau-hoi.md`). Mã QR trong Figma (component `CTA/QR Code`) đã là QR thật trỏ `https://renvindo.com` từ 22/10 [xác minh 22/10 — khớp 625/625 ô].
+**Giao diện chỉ còn bản sáng** (Thắng chốt 26/10, nhánh `bo-giao-dien-toi`): bỏ bộ màu tối tự bật theo chế độ tối của máy (`styles.css` 3 khối `prefers-color-scheme: dark`, `themeColor` trong `layout.tsx`). [xác minh 26/10] typecheck, lint, build đạt; CSS sau build chỉ còn `color-scheme: light`. Chưa chụp màn trên web thật — kiểm sau khi cập nhật VPS (bản mới). Trang quản trị `/admin` không đổi.
+
+**Để sau ra mắt (Thắng giao 21–22/10, nhắc lại khi xong việc quan trọng):** UI-v3 (Thắng làm thiết kế); giao diện trang quản trị (CMS) cho RENCO; chữ cạnh mã QR trong Figma hứa đích khác trang chủ (danh sách ở `docs/08-handoff/03-viec-dang-do-va-cau-hoi.md`). Mã QR trong Figma (component `CTA/QR Code`) đã là QR thật trỏ `https://renvindo.com` từ 22/10 [xác minh 22/10 — khớp 625/625 ô].
 
 ## 5. Việc RGI phải làm trước ra mắt
 

@@ -37,28 +37,8 @@
   --wrap: 1200px;
   --gutter: 24px;
   --shadow: 0 1px 2px rgb(11 46 36 / 6%), 0 8px 24px rgb(11 46 36 / 6%);
+  /* Chỉ dùng giao diện sáng (Thắng chốt 26/10/2026): không đổi theo chế độ tối của máy. */
   color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --brand: #2bc274;
-    --brand-strong: #7fd3a2;
-    --brand-tint: #11261d;
-    --ink: #e8f0ea;
-    --ink-2: #b2c1b7;
-    --surface: #0d1713;
-    --canvas: #132019;
-    --border: #22352b;
-    --border-strong: #35503f;
-    --danger: #ff8a7a;
-    --danger-tint: #2a1512;
-    --focus: #8ab4ff;
-    --line-p: #7d9cff;
-    --line-r: #ff7a72;
-    --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 8px 24px rgb(0 0 0 / 25%);
-    color-scheme: dark;
-  }
 }
 
 *,
@@ -249,13 +229,6 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .btn--primary {
-    background: var(--brand);
-    color: #062014;
-  }
 }
 
 /* ---------- Header ---------- */
@@ -631,16 +604,6 @@ table.spec tr:last-child td {
   font-size: 0.8rem;
   color: var(--warning);
   font-style: italic;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .pending {
-    color: #f0c75e;
-  }
-  :root:not([data-theme='light']) .badge--soon {
-    background: #3a3100;
-    color: #ffe680;
-    border-color: #6b5a00;
-  }
 }
 
 /* ---------- Bộ lọc ---------- */
