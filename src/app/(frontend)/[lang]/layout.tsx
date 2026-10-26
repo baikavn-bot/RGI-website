@@ -16,10 +16,7 @@ import { isLocale } from '../../../lib/seo'
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f5f7f3' },
-    { media: '(prefers-color-scheme: dark)', color: '#0d1713' },
-  ],
+  themeColor: '#f5f7f3',
 }
 
 export const metadata: Metadata = {

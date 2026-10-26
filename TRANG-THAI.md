@@ -76,7 +76,9 @@ Xong trước đó: Cài đặt VPS test (21/10), thử Caddyfile (21/10). Bỏ:
 | 11 | «750 tấn» viết cứng (mục 3 #3b) | Thắng quyết | Không |
 | 12 | Đưa phần Sản phẩm catalog v3.0 lên bản thật (`/opt/renvindo-web`): gộp PR → cập nhật phiên bản (RUNBOOK mục 3) → nhập (mục 12). Sau đó RGI xác nhận số để đổi «Nhà máy xác nhận»; 4 chỗ catalog nghi sai cần RGI kiểm; chữ «năm dòng» trong trang Về RENCO cần sửa tay trong CMS | Tèo soạn lệnh, Thắng chạy; RGI xác nhận số | Có — trang sản phẩm đang là danh mục cũ |
 
-**Để sau ra mắt (Thắng giao 21–22/10, nhắc lại khi xong việc quan trọng):** UI-v3 (Thắng làm thiết kế); giao diện trang quản trị (CMS) cho RENCO; chữ cạnh mã QR trong Figma hứa đích khác trang chủ; giao diện sáng/tối tự đổi theo máy — giữ hay bỏ (danh sách ở `docs/08-handoff/03-viec-dang-do-va-cau-hoi.md`). Mã QR trong Figma (component `CTA/QR Code`) đã là QR thật trỏ `https://renvindo.com` từ 22/10 [xác minh 22/10 — khớp 625/625 ô].
+**Giao diện chỉ còn bản sáng** (Thắng chốt 26/10, nhánh `bo-giao-dien-toi`): bỏ bộ màu tối tự bật theo chế độ tối của máy (`styles.css` 3 khối `prefers-color-scheme: dark`, `themeColor` trong `layout.tsx`). [xác minh 26/10] typecheck, lint, build đạt; CSS sau build chỉ còn `color-scheme: light`. Chưa chụp màn trên web thật — kiểm sau khi cập nhật VPS (bản mới). Trang quản trị `/admin` không đổi.
+
+**Để sau ra mắt (Thắng giao 21–22/10, nhắc lại khi xong việc quan trọng):** UI-v3 (Thắng làm thiết kế); giao diện trang quản trị (CMS) cho RENCO; chữ cạnh mã QR trong Figma hứa đích khác trang chủ (danh sách ở `docs/08-handoff/03-viec-dang-do-va-cau-hoi.md`). Mã QR trong Figma (component `CTA/QR Code`) đã là QR thật trỏ `https://renvindo.com` từ 22/10 [xác minh 22/10 — khớp 625/625 ô].
 
 ## 5. Việc RGI phải làm trước ra mắt
 
