@@ -24,7 +24,7 @@ Bản yêu cầu v0.1 không còn là một file riêng: nội dung đã chuyể
 | Mục yêu cầu v0.1 | Đã làm | Vị trí trong mã |
 | --- | --- | --- |
 | 3. Vai trò | 6 vai trò nội bộ: Giám đốc, Quản lý marketing, Sales, Biên tập, Pháp chế, Quản trị kỹ thuật; kiểm quyền ở backend | `src/access`, `access` của từng collection |
-| 4. Chức năng MVP | Trang công khai Việt – Anh, catalog 5 dòng, 6 loại form, quản trị lead, CMS có duyệt, nhật ký | — |
+| 4. Chức năng MVP | Trang công khai Việt – Anh, catalog 4 dòng (theo Catalog RENCO 2026 v3.0 từ 26/10/2026, mục 8), 6 loại form, quản trị lead, CMS có duyệt, nhật ký | — |
 | 5. Luồng | F1 – F7, vòng đời lead có kiểm chuyển trạng thái | `collections/Leads.ts`, `endpoints/submitLead.ts` |
 | 6. Sitemap | 13 loại trang, URL Việt không dấu, tiếng Anh dưới /en, 301 từ /vi/... | `lib/routes.ts`, `proxy.ts`, `app/(frontend)` |
 | 7–8. Kiến trúc, stack | Next.js 16 + Payload 3.91 + PostgreSQL, một ứng dụng | — |
@@ -126,11 +126,27 @@ Lưu ý thêm: sửa chữ trong quy cách (cỡ, ghi chú) không qua bước P
 1. Tên miền chính thức: `renvindo.com` (RGI đã có, 21/10/2026; DNS ở ZoneDNS). **Email công ty: `greenplast.renco689@gmail.com`** (Thắng chốt 21/10/2026) — hiện trên website (nhập ở Cài đặt website), nhận thông báo lead, và là địa chỉ gửi email đi qua SMTP Gmail (RUNBOOK mục 2). Hộp thư theo tên miền `@renvindo.com` chưa có; nếu tạo sau thì cấu hình SPF, DKIM, DMARC. **Không dùng `renco.vn`** (tên miền cũ trong bản yêu cầu v0.1): đã thuộc người khác — link, email trỏ về đó sẽ tới tay người lạ.
 2. Thuê máy chủ ảo tại Việt Nam; tạo tài khoản Cloudflare Turnstile.
 3. Pháp chế dán WB01, WB02 vào trang pháp lý; chốt câu đồng ý và thời hạn giữ lead.
-4. Giao bảng dữ liệu sản phẩm chuẩn (mã, tên Việt – Anh, cỡ, số liệu đã nhà máy xác nhận).
+4. Xác nhận số liệu sản phẩm: danh mục đã dựng theo Catalog RENCO 2026 v3.0 (mục 8); Giám đốc/Pháp chế đổi từng quy cách sang «Nhà máy xác nhận» khi RGI xác nhận số. Catalog còn 4 chỗ nghi chép nhầm (RC-H04 7/8" cuộn 100 m; khối lượng RC-H07; RC-H06 trùng RC-H07) và chưa có số giấy chứng nhận hợp quy.
 5. Rà quyền dùng 14 ảnh mẫu; thay ảnh hero bằng ảnh độ phân giải cao (≥ 1600 px).
 6. Tải catalog, hồ sơ năng lực bản PDF đã duyệt vào mục Tài liệu.
 7. Trả lời các câu hỏi mở của yêu cầu v0.1, mục 25 (Zalo, màu RC-W, chữ "tái chế" trong tên sản phẩm, có nộp WB03 không).
 
 ## 7. Dữ liệu mẫu
 
-`pnpm seed` nạp 5 dòng, 8 sản phẩm, 30 quy cách, 10 trang, 14 ảnh, 7 tài khoản `*@renco.test`. Mọi quy cách ở trạng thái "đề xuất"; sản phẩm và trang được đánh dấu "Đã duyệt" chỉ để chạy thử — Pháp chế duyệt lại toàn bộ trên staging. Không chạy seed trên production.
+`pnpm seed` nạp 5 dòng, 8 sản phẩm, 30 quy cách theo bản yêu cầu v0.1 (muốn có danh mục catalog v3.0 trên máy: chạy tiếp script ở mục 8), 10 trang, 14 ảnh, 7 tài khoản `*@renco.test`. Mọi quy cách ở trạng thái "đề xuất"; sản phẩm và trang được đánh dấu "Đã duyệt" chỉ để chạy thử — Pháp chế duyệt lại toàn bộ trên staging. Không chạy seed trên production.
+
+## 8. Sản phẩm theo Catalog RENCO 2026 v3.0 (26/10/2026)
+
+Thắng chốt 22/10/2026: catalog v3.0 (Figma page 19 `70:57`, bản EN 19b `98:57`) là nguồn đúng; website làm theo catalog, chia **4 dòng**: Ống PVC-U & phụ kiện (RC-P), Ống mềm PVC (RC-H), Tấm nhựa tái chế (RC-S), Tấm lợp nhựa tái chế ép (RC-R). Bỏ tấm ốp tường RC-W01 (catalog không có; sản phẩm về nháp, dòng RC-W tự ẩn vì không còn sản phẩm hiện).
+
+| Phần | Ở đâu |
+| --- | --- |
+| Dữ liệu catalog (22 sản phẩm, 266 quy cách) | `src/seed/catalog-v3/data.ts` |
+| Script nhập (không xoá dữ liệu, chạy lặp được) | `src/seed/catalog-v3/run.ts` · cách chạy: `docs/RUNBOOK.md` mục 12 |
+| Kiểu bảng quy cách theo sản phẩm (`specTemplate`): ma trận dn × dãy S, dn × Class A/B, phụ kiện (mã + tên), ống mềm, tấm lót (hai cột độc lập), tấm | `src/collections/Products.ts`, `src/lib/specs.ts`, `src/components/ProductSpecs.tsx` |
+| Nhóm trong dòng (`groupLabel`, vd. Dẫn nước / Trong suốt / Lưới dệt / Kỹ thuật) | `Products.ts`; trang dòng gom thẻ theo nhóm |
+| Trường mới của quy cách: `odMaxMm` (Ø ngoài dạng khoảng), `weightKgPerCoilMin/Max` (kg/cuộn), `pipeSeries` (dãy S), `wallClass` (Class A/B) | `src/collections/Variants.ts`, migration `20261026_071359_san_pham_catalog_v3` |
+| Dòng không còn sản phẩm hiện thì tự ẩn khỏi trang Sản phẩm, trang chủ, sitemap | `getLines` trong `src/lib/data.ts` |
+
+Quy tắc giữ nguyên: số chỉ hiện khi «Nhà máy xác nhận» (BR-04; `odMaxMm`, `weightKgPerCoil*` cũng bị khoá như số khác; dãy S và Class là cách phân loại nên luôn hiện); nhãn «Hợp quy» chỉ từ hồ sơ hợp quy (catalog ghi «GCN số [—]» nên chưa hiện); ống PVC-U «Sắp ra mắt» tới khi có hồ sơ hợp quy (BR-01). Mã sản phẩm `RC-P-CN` (ống cấp nước) và `RC-P-TN` (ống thoát) là mã tạm — catalog không đặt mã cho hai loại này; RGI đổi được trong quản trị.
+

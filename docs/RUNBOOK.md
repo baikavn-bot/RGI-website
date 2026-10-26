@@ -183,3 +183,28 @@ docker compose up -d --force-recreate web    # bỏ bộ nhớ đệm cũ để 
 
 - **Bắt buộc `NODE_ENV=production`.** Thiếu biến này, Payload chạy chế độ dev: tự sửa cấu trúc bảng và để lại dấu «dev mode». Lần khởi động sau, web production **dừng chờ câu hỏi xác nhận** và treo (`unhealthy`) — đã gặp trên VPS test 20/10/2026. Cách gỡ: xoá database, cho web chạy migration lại, seed lại đúng lệnh trên.
 - Mật khẩu 7 tài khoản mẫu ghi vào `.seed-credentials` (chỉ root đọc). Seed **xoá** sản phẩm, trang, ảnh hiện có — chỉ dùng trên máy chủ thử chứa dữ liệu mẫu.
+
+## 12. Nhập sản phẩm theo Catalog RENCO 2026 v3.0 (dùng được trên bản thật)
+
+Script `src/seed/catalog-v3/run.ts` (dữ liệu ở `src/seed/catalog-v3/data.ts`). Khác `pnpm seed`: **không xoá** lead, người dùng, trang, ảnh, tài liệu, hồ sơ hợp quy, cài đặt. Nó cập nhật tên/mô tả 4 dòng, thêm hoặc cập nhật 22 sản phẩm và 266 quy cách theo mã, chuyển 6 sản phẩm cũ (RC-P hệ inch, RC-H-W/C/B/T, RC-W01) về nháp, xoá các quy cách mẫu cũ của RC-S01, RC-R01, đổi tiêu đề trang Sản phẩm «Năm dòng» → «Bốn dòng». Chạy lại nhiều lần không sinh trùng.
+
+Quy cách mới ở trạng thái «Đề xuất» — website hiện «Đang cập nhật»/«Chờ» cho tới khi Giám đốc hoặc Pháp chế đổi sang «Nhà máy xác nhận» (BR-04). Ống PVC-U giữ «Sắp ra mắt» cho tới khi có hồ sơ hợp quy đã duyệt (BR-01).
+
+Trình tự (sau khi đã cập nhật phiên bản theo mục 3, để migration thêm cột mới đã chạy):
+
+```bash
+cd /opt/renvindo-web
+./scripts/backup.sh                       # không thấy "backup ok" thì DỪNG
+docker build --target builder -t renvindo-web:nhap --build-arg NEXT_PUBLIC_SITE_URL="$(grep '^NEXT_PUBLIC_SITE_URL=' .env | cut -d= -f2)" .
+NET=$(docker inspect -f '{{range $k,$v := .NetworkSettings.Networks}}{{$k}}{{end}}' "$(docker compose ps -q db)")
+nhap() { ( set -a; . ./.env; set +a; docker run --rm --network "$NET" \
+  -e NODE_ENV=production -e DISABLE_JOBS=true -e NHAP_GHI="$1" -e NHAP_XUAT_BAN="$2" \
+  -e DATABASE_URL="postgres://$POSTGRES_USER:$POSTGRES_PASSWORD@db:5432/$POSTGRES_DB" -e PAYLOAD_SECRET="$PAYLOAD_SECRET" \
+  -e NEXT_PUBLIC_SITE_URL="$NEXT_PUBLIC_SITE_URL" renvindo-web:nhap sh -c 'corepack enable pnpm >/dev/null 2>&1; pnpm payload run src/seed/catalog-v3/run.ts' ) }
+nhap 0 0                                   # chạy thử: chỉ in ra sẽ làm gì
+nhap 1 1                                   # ghi thật + xuất bản (Giám đốc đã duyệt theo catalog); "nhap 1 0" = ghi thành nháp chờ duyệt
+docker compose up -d --force-recreate web  # bỏ bộ nhớ đệm để hiện ngay
+```
+
+- **Bắt buộc `NODE_ENV=production`** (cùng lý do mục 11): thiếu thì Payload tự sửa cấu trúc bảng, lần khởi động sau web treo chờ câu hỏi.
+- Muốn bỏ hẳn: khôi phục bản sao lưu vừa tạo (mục 6). Sản phẩm cũ chỉ bị chuyển về nháp — xuất bản lại trong trang quản trị nếu cần.

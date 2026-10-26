@@ -40,6 +40,18 @@ export const SPEC_STATUSES = [
   { value: 'factory_confirmed', label: { vi: 'Nhà máy đã xác nhận', en: 'Confirmed by factory' } },
 ] as const
 
+/** Kiểu bảng quy cách của sản phẩm — theo cách trình bày của Catalog RENCO 2026 v3.0. */
+export const SPEC_TEMPLATES = [
+  { value: 'pressure_pipe', label: { vi: 'Ống cấp nước (bảng dn × dãy S)', en: 'Pressure pipe (dn × S series)' } },
+  { value: 'drain_pipe', label: { vi: 'Ống thoát nước (bảng dn × Class A/B)', en: 'Drainage pipe (dn × class A/B)' } },
+  { value: 'fitting', label: { vi: 'Phụ kiện (mã + tên, không số đo)', en: 'Fittings (code + name, no dimensions)' } },
+  { value: 'hose', label: { vi: 'Ống mềm (Ø trong, Ø ngoài, dài cuộn, kg/cuộn)', en: 'Hose (ID, OD, coil, kg/coil)' } },
+  { value: 'gutter_liner', label: { vi: 'Tấm lót (dài và khổ kết hợp tự do)', en: 'Liner (length and width combined freely)' } },
+  { value: 'sheet', label: { vi: 'Tấm (dài × rộng)', en: 'Sheet (length × width)' } },
+  { value: 'panel', label: { vi: 'Tấm (dài × rộng × dày)', en: 'Panel (length × width × thickness)' } },
+] as const
+export type SpecTemplate = (typeof SPEC_TEMPLATES)[number]['value']
+
 export const LEAD_TYPES = [
   { value: 'distributor', label: { vi: 'Nhà phân phối', en: 'Distributor' } },
   { value: 'retailer', label: { vi: 'Cửa hàng', en: 'Retail store' } },

@@ -8,7 +8,22 @@ import { options, SPEC_STATUSES } from '../lib/constants'
 /** BR-04: số liệu quy cách chỉ hiện công khai khi nhà máy đã xác nhận. */
 const specRead: FieldAccess = ({ req, doc }) => isInternal(req) || doc?.specStatus === 'factory_confirmed'
 
-const SPEC_FIELDS = ['dnMm', 'eMm', 'idMm', 'odMm', 'lengthM', 'lengthMm', 'widthMm', 'thicknessMm', 'pnBar', 'weightKgPerM', 'coilLengthM'] as const
+const SPEC_FIELDS = [
+  'dnMm',
+  'eMm',
+  'idMm',
+  'odMm',
+  'odMaxMm',
+  'lengthM',
+  'lengthMm',
+  'widthMm',
+  'thicknessMm',
+  'pnBar',
+  'weightKgPerM',
+  'weightKgPerCoilMin',
+  'weightKgPerCoilMax',
+  'coilLengthM',
+] as const
 
 const spec = (name: (typeof SPEC_FIELDS)[number], vi: string, en: string): Field => ({
   name,
@@ -68,6 +83,28 @@ export const Variants: CollectionConfig = {
       admin: { description: { vi: 'Tên gọi thị trường, ví dụ Ø114, 5/8", 1220 × 2440.', en: 'Market name, e.g. Ø114, 5/8".' } },
     },
     {
+      type: 'row',
+      fields: [
+        {
+          // Dãy ống là cách phân loại (catalog v3.0 trang 06), không phải số đo: luôn hiện.
+          name: 'pipeSeries',
+          type: 'number',
+          label: { vi: 'Dãy ống S (ống cấp nước)', en: 'Pipe series S (pressure pipe)' },
+          admin: { step: 0.1, width: '50%', description: { vi: '6,3 · 8 · 10 · 12,5 · 16', en: '6.3 · 8 · 10 · 12.5 · 16' } },
+        },
+        {
+          name: 'wallClass',
+          type: 'select',
+          options: [
+            { value: 'A', label: 'Class A' },
+            { value: 'B', label: 'Class B' },
+          ],
+          label: { vi: 'Cấp chiều dày (ống thoát)', en: 'Wall class (drainage pipe)' },
+          admin: { width: '50%' },
+        },
+      ],
+    },
+    {
       name: 'specStatus',
       type: 'select',
       required: true,
@@ -94,8 +131,16 @@ export const Variants: CollectionConfig = {
           type: 'row',
           fields: [
             spec('idMm', 'Đường kính trong (mm)', 'Inner diameter (mm)'),
-            spec('odMm', 'Đường kính ngoài (mm)', 'Outer diameter (mm)'),
+            spec('odMm', 'Đường kính ngoài (mm) — số nhỏ nhất', 'Outer diameter (mm) — min'),
+            spec('odMaxMm', 'Đường kính ngoài (mm) — số lớn nhất', 'Outer diameter (mm) — max'),
             spec('coilLengthM', 'Dài cuộn (m)', 'Coil length (m)'),
+          ],
+        },
+        {
+          type: 'row',
+          fields: [
+            spec('weightKgPerCoilMin', 'Khối lượng (kg/cuộn) — số nhỏ nhất', 'Weight (kg/coil) — min'),
+            spec('weightKgPerCoilMax', 'Khối lượng (kg/cuộn) — số lớn nhất', 'Weight (kg/coil) — max'),
             spec('weightKgPerM', 'Khối lượng (kg/m)', 'Weight (kg/m)'),
           ],
         },

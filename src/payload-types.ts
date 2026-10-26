@@ -364,6 +364,14 @@ export interface Product {
   line: number | ProductLine;
   order?: number | null;
   name: string;
+  /**
+   * e.g. Water, Clear. The line page groups products by this.
+   */
+  groupLabel?: string | null;
+  /**
+   * Empty: chosen by product line.
+   */
+  specTemplate?: ('pressure_pipe' | 'drain_pipe' | 'fitting' | 'hose' | 'gutter_liner' | 'sheet' | 'panel') | null;
   slug: string;
   summary?: string | null;
   uses?: string[] | null;
@@ -456,6 +464,11 @@ export interface Variant {
    * Market name, e.g. Ø114, 5/8".
    */
   sizeLabel: string;
+  /**
+   * 6.3 · 8 · 10 · 12.5 · 16
+   */
+  pipeSeries?: number | null;
+  wallClass?: ('A' | 'B') | null;
   specStatus: 'proposed' | 'factory_confirmed';
   dnMm?: number | null;
   eMm?: number | null;
@@ -463,7 +476,10 @@ export interface Variant {
   lengthM?: number | null;
   idMm?: number | null;
   odMm?: number | null;
+  odMaxMm?: number | null;
   coilLengthM?: number | null;
+  weightKgPerCoilMin?: number | null;
+  weightKgPerCoilMax?: number | null;
   weightKgPerM?: number | null;
   lengthMm?: number | null;
   widthMm?: number | null;
@@ -955,6 +971,8 @@ export interface ProductsSelect<T extends boolean = true> {
   line?: T;
   order?: T;
   name?: T;
+  groupLabel?: T;
+  specTemplate?: T;
   slug?: T;
   summary?: T;
   uses?: T;
@@ -996,6 +1014,8 @@ export interface VariantsSelect<T extends boolean = true> {
   product?: T;
   order?: T;
   sizeLabel?: T;
+  pipeSeries?: T;
+  wallClass?: T;
   specStatus?: T;
   dnMm?: T;
   eMm?: T;
@@ -1003,7 +1023,10 @@ export interface VariantsSelect<T extends boolean = true> {
   lengthM?: T;
   idMm?: T;
   odMm?: T;
+  odMaxMm?: T;
   coilLengthM?: T;
+  weightKgPerCoilMin?: T;
+  weightKgPerCoilMax?: T;
   weightKgPerM?: T;
   lengthMm?: T;
   widthMm?: T;

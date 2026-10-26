@@ -3,12 +3,12 @@
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 import type { Dict } from '../lib/i18n'
+import { fmtValue, type SpecValue } from '../lib/specs'
 
 export type VariantRow = {
   sku: string
   sizeLabel: string
-  product?: string
-  values: Record<string, number | null | undefined>
+  values: Record<string, SpecValue>
   color?: string | null
 }
 
@@ -16,19 +16,16 @@ type Props = {
   rows: VariantRow[]
   columns: string[]
   dict: Dict
-  showProduct?: boolean
   filterable?: boolean
   caption: string
   locale: 'vi' | 'en'
 }
 
-const fmt = (v: number, locale: string) => new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'vi-VN', { maximumFractionDigits: 2 }).format(v)
-
 /**
  * Bảng quy cách. Số chưa xác nhận (API không trả) hiện "Đang cập nhật" — không để ô trống, không để gạch (BR-04).
  * Bộ lọc cỡ lưu trên URL (?co=...) để chia sẻ được đường dẫn.
  */
-export function VariantTable({ rows, columns, dict, showProduct, filterable, caption, locale }: Props) {
+export function VariantTable({ rows, columns, dict, filterable, caption, locale }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const params = useSearchParams()
@@ -44,7 +41,7 @@ export function VariantTable({ rows, columns, dict, showProduct, filterable, cap
   }
 
   const label = (c: string) => (dict.spec as Record<string, string>)[c] ?? c
-  const hasPending = rows.some((r) => columns.some((c) => r.values[c] == null))
+  const hasPending = rows.some((r) => columns.some((c) => r.values[c]?.min == null))
 
   return (
     <div>
@@ -74,7 +71,6 @@ export function VariantTable({ rows, columns, dict, showProduct, filterable, cap
             <thead>
               <tr>
                 <th scope="col">{dict.common.code}</th>
-                {showProduct ? <th scope="col">{locale === 'vi' ? 'Sản phẩm' : 'Product'}</th> : null}
                 <th scope="col">{dict.common.size}</th>
                 {columns.map((c) => (
                   <th key={c} scope="col">
@@ -87,13 +83,12 @@ export function VariantTable({ rows, columns, dict, showProduct, filterable, cap
               {shown.map((r) => (
                 <tr key={r.sku}>
                   <th scope="row">{r.sku}</th>
-                  {showProduct ? <td>{r.product}</td> : null}
                   <td>{r.sizeLabel}</td>
                   {columns.map((c) => {
-                    const v = r.values[c]
+                    const v = r.values[c] ? fmtValue(r.values[c], locale) : null
                     return (
                       <td key={c} className={v != null ? 'num' : undefined}>
-                        {v != null ? fmt(v, locale) : <span className="pending">{dict.common.updating}</span>}
+                        {v ?? <span className="pending">{dict.common.updating}</span>}
                       </td>
                     )
                   })}

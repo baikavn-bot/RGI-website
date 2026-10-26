@@ -4,7 +4,7 @@ import { fieldRoles, internalField, publishedOrInternal, roles } from '../access
 import { auditAfterChange, auditAfterDelete } from '../hooks/audit'
 import { legalGate, legalReviewField } from '../hooks/legalGate'
 import { revalidateAfterChange, revalidateAfterDelete } from '../hooks/revalidate'
-import { CLAIM_LEVELS, options, PIPE_LINE_CODE, SALE_STATUSES } from '../lib/constants'
+import { CLAIM_LEVELS, options, PIPE_LINE_CODE, SALE_STATUSES, SPEC_TEMPLATES } from '../lib/constants'
 
 const idOf = (v: unknown): string | number | null => {
   if (v == null) return null
@@ -140,6 +140,25 @@ export const Products: CollectionConfig = {
       ],
     },
     { name: 'name', type: 'text', required: true, localized: true, label: { vi: 'Tên sản phẩm', en: 'Name' } },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'groupLabel',
+          type: 'text',
+          localized: true,
+          label: { vi: 'Nhóm trong dòng', en: 'Group within line' },
+          admin: { width: '50%', description: { vi: 'Ví dụ: Dẫn nước, Trong suốt. Trang dòng gom sản phẩm theo nhóm này.', en: 'e.g. Water, Clear. The line page groups products by this.' } },
+        },
+        {
+          name: 'specTemplate',
+          type: 'select',
+          options: options(SPEC_TEMPLATES),
+          label: { vi: 'Kiểu bảng quy cách', en: 'Spec table type' },
+          admin: { width: '50%', description: { vi: 'Để trống: chọn theo dòng sản phẩm.', en: 'Empty: chosen by product line.' } },
+        },
+      ],
+    },
     {
       name: 'slug',
       type: 'text',

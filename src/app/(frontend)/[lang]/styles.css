@@ -477,8 +477,9 @@ p {
   display: grid;
   gap: 20px;
 }
+/* Thẻ dòng sản phẩm: auto-fit để số thẻ ít hơn số cột (4 dòng) vẫn giãn đều lấp đầy hàng. */
 .grid--5 {
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
 .grid--3 {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -611,6 +612,18 @@ table.spec thead th {
 table.spec td.num {
   font-family: var(--font-data);
   text-align: right;
+}
+table.spec th.num {
+  text-align: right;
+}
+/* Bảng ít cột (ống thoát, tấm lót, phụ kiện): co theo màn hình, không bắt cuộn ngang trên điện thoại. */
+table.spec--compact {
+  min-width: 0;
+}
+table.spec tfoot th,
+table.spec tfoot td {
+  font-weight: 600;
+  border-top: 1px solid var(--border);
 }
 table.spec th:first-child,
 table.spec td:first-child {

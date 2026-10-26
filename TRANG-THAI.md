@@ -1,6 +1,6 @@
 # TRẠNG THÁI DỰ ÁN — đọc file này đầu tiên mỗi phiên
 
-*Cập nhật **22/10/2026** · Ai sửa trạng thái thì sửa ngày ở dòng này. Chỉ sửa qua Pull Request.*
+*Cập nhật **26/10/2026** · Ai sửa trạng thái thì sửa ngày ở dòng này. Chỉ sửa qua Pull Request.*
 
 Ký hiệu: **[xác minh dd/mm]** = đã mở ra kiểm, có ngày · **[suy luận]** = suy ra, chưa kiểm · **[CẦN XÁC NHẬN]** = chờ người trả lời.
 
@@ -33,6 +33,7 @@ MVP v0.1 website renvindo.com đã có mã đầy đủ trên GitHub (16/10/2026
 | **Thử `deploy/Caddyfile` trên máy** (Caddy 2.11.7, tên miền thử `renvindo.localhost`, chứng chỉ nội bộ của Caddy): trước với web giả, sau với ảnh web thật build từ `Dockerfile` + database trống | 21/10 | [xác minh 21/10] Cấu hình hợp lệ; HTTPS chạy (curl kiểm chứng chỉ, không bỏ qua); `http` → `https` (308), `www` → không `www` giữ nguyên đường dẫn (301); có HSTS, CSP, `x-frame-options`, `noindex` ở `/admin`; header `Server` của web bị xoá; nén gzip; `X-Real-IP` do trình duyệt tự khai bị Caddy ghi đè. Chặn IP: ngoài danh sách → `/admin`, `/admin/login`, `/ADMIN`, `/admin%2F` đều 403; trong danh sách → 200; biến để trống → mở mọi IP. **Sửa 2 chỗ:** (1) `/_next/static` trả 2 dòng `Cache-Control` → thêm `>` cho Caddy ghi đè, thử lại còn 1 dòng; (2) ghi `ADMIN_ALLOW_IPS` bằng dấu phẩy làm Caddy không khởi động, **cả website sập** → ghi chú trong Caddyfile + RUNBOOK mục 2 kèm lệnh kiểm trước khi khởi động lại (đã thử: lệnh bắt được lỗi). Chưa thử: Let's Encrypt thật (cần tên miền thật trỏ về máy chủ) |
 | PR #16: `scripts/backup.sh` có quyền chạy (trước đó `./scripts/backup.sh` báo `Permission denied` trên VPS — cron sao lưu sẽ hỏng âm thầm) | 22/10 | Đã gộp; VPS đã kéo về (`mode change 100644 => 100755`) [xác minh 22/10] |
 | **`renvindo.com` trỏ về VPS test**, giao diện v1, dữ liệu mẫu: DNS ZoneDNS bản ghi A `@` + `www`; aaPanel gắn 2 tên miền vào site có sẵn, một chứng chỉ Let's Encrypt chung cho 4 tên miền (hạn 20/01/2027); sao lưu trước khi đổi (`backup ok`); build lại với `NEXT_PUBLIC_SITE_URL=https://renvindo.com`, giữ `SITE_ENV=staging`; ảnh quay lui `prev-20261022-0942` | 22/10 | [xác minh 22/10 — Tèo kiểm từ ngoài] 11 đường dẫn chính (`/`, `/en`, `/san-pham`, `/lien-he`, `/nha-may`, `/hop-tac`, `/tai-lieu`, `/admin`, `/admin/login`, `/api/health`, `/robots.txt`) trả 200; `http` → `https` (301); sitemap 23 trang đều `https://renvindo.com`, canonical + `og:url` đúng; robots chặn toàn bộ; CSP, `x-frame-options` có; đăng nhập sai mật khẩu trả 401 (không bị chặn chống giả mạo); không còn chữ `renco.vn` trên 23 trang; chụp màn trang chủ hiển thị đúng. Build lần đầu hỏng vì kho npm trả 503 khi tải pnpm, chạy lại thì qua |
+| **Phần Sản phẩm dựng lại theo Catalog RENCO 2026 v3.0** (Thắng chốt 22/10, duyệt cấu trúc 26/10): 4 dòng, 22 sản phẩm, 266 quy cách; bảng quy cách theo kiểu catalog (ma trận dn × dãy S, Class A/B, phụ kiện mã + tên, ống mềm có khoảng Ø ngoài và kg/cuộn); thêm 7 trường + migration; script nhập không xoá dữ liệu (`docs/RUNBOOK.md` mục 12); bỏ RC-W01 | 26/10 | Nhánh `san-pham-theo-catalog-v3`, **chưa gộp, chưa lên VPS**. [xác minh 26/10 — trên máy] typecheck, lint `src`, build đạt; script chạy thử → ghi → chạy lại không sinh trùng (266 quy cách «không đổi»); chụp 375 và 1280 các trang sản phẩm, đã mở ra xem |
 
 ## 3. Đang dở / rủi ro đã biết
 
@@ -73,6 +74,7 @@ Xong trước đó: Cài đặt VPS test (21/10), thử Caddyfile (21/10). Bỏ:
 | 9 | Chặn `/admin` theo IP văn phòng trong nginx aaPanel (cần IP văn phòng RGI); không có thì chỉ còn mật khẩu + 2FA | Thắng quyết có/không | Không bắt buộc |
 | 10 | Diễn tập quay lui ảnh `prev-` | Tèo soạn, Thắng chạy | Nên làm |
 | 11 | «750 tấn» viết cứng (mục 3 #3b) | Thắng quyết | Không |
+| 12 | Đưa phần Sản phẩm catalog v3.0 lên bản thật (`/opt/renvindo-web`): gộp PR → cập nhật phiên bản (RUNBOOK mục 3) → nhập (mục 12). Sau đó RGI xác nhận số để đổi «Nhà máy xác nhận»; 4 chỗ catalog nghi sai cần RGI kiểm; chữ «năm dòng» trong trang Về RENCO cần sửa tay trong CMS | Tèo soạn lệnh, Thắng chạy; RGI xác nhận số | Có — trang sản phẩm đang là danh mục cũ |
 
 **Để sau ra mắt (Thắng giao 21–22/10, nhắc lại khi xong việc quan trọng):** UI-v3 (Thắng làm thiết kế); giao diện trang quản trị (CMS) cho RENCO; chữ cạnh mã QR trong Figma hứa đích khác trang chủ; giao diện sáng/tối tự đổi theo máy — giữ hay bỏ (danh sách ở `docs/08-handoff/03-viec-dang-do-va-cau-hoi.md`). Mã QR trong Figma (component `CTA/QR Code`) đã là QR thật trỏ `https://renvindo.com` từ 22/10 [xác minh 22/10 — khớp 625/625 ô].
 
